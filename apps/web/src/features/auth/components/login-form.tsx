@@ -30,6 +30,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { authClient } from "@/lib/auth-client";
 import { RequiredLabel } from "@/components/ui/required-label";
+import { ModeToggle } from "@/components/mode-toggle";
 
 const loginSchema = z.object({
   email: z.email("Please enter a valid email"),
@@ -72,10 +73,15 @@ export default function LoginForm() {
 
   return (
     <div className="flex flex-col gap-6">
-      <Card>
-        <CardHeader className="text-center">
-          <CardTitle>Welcome back</CardTitle>
-          <CardDescription>Login to continue</CardDescription>
+      <Card className="border-none bg-transparent shadow-none">
+        <CardHeader className="text-center pb-2">
+          <CardTitle className="text-2xl font-bold tracking-tight">
+            Welcome back
+          </CardTitle>
+          <CardDescription className="text-muted-foreground/70">
+            Create AI workflows by logging in
+          </CardDescription>
+          {/* <ModeToggle /> */}
         </CardHeader>
         <CardContent>
           <Form {...form}>
@@ -138,8 +144,12 @@ export default function LoginForm() {
                     )}
                   />
 
-                  <Button type="submit" disabled={isPending} className="w-full">
-                    Login
+                  <Button
+                    type="submit"
+                    disabled={isPending}
+                    className="w-full bg-primary hover:shadow-[0_0_15px_rgba(var(--primary),0.5)] transition-all duration-300"
+                  >
+                    {isPending ? "Authenticating..." : "Access Dashboard"}
                   </Button>
                 </div>
                 <div className="text-sm text-center">

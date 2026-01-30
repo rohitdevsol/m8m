@@ -1,6 +1,7 @@
 import { Toaster } from "@/components/ui/sonner";
 import { TRPCReactProvider } from "@/trpc/client";
 import "./globals.css";
+import { ThemeProvider } from "@/components/providers/theme-provider";
 
 export default function RootLayout({
   children,
@@ -8,10 +9,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body>
         <TRPCReactProvider>
-          {children}
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+            {children}
+          </ThemeProvider>
           <Toaster richColors />
         </TRPCReactProvider>
       </body>

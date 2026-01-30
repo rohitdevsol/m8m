@@ -1,6 +1,6 @@
+import { CustomButton } from "@/components/custom-button";
 import { requireAuth } from "@/lib/auth-utils";
 import { caller } from "@/trpc/server";
-import { prisma } from "@repo/database";
 
 export default async function IndexPage() {
   await requireAuth();
@@ -9,6 +9,7 @@ export default async function IndexPage() {
   return (
     <div>
       <h1>Hello World</h1>
+      <CustomButton />
       <pre>{JSON.stringify(users, null, 2)}</pre>
     </div>
   );
