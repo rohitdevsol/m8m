@@ -1,4 +1,6 @@
+import { Toaster } from "@/components/ui/sonner";
 import { TRPCReactProvider } from "@/trpc/client";
+import "./globals.css";
 
 export default function RootLayout({
   children,
@@ -8,7 +10,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <TRPCReactProvider>{children}</TRPCReactProvider>
+        <TRPCReactProvider>
+          {children}
+          <Toaster richColors />
+        </TRPCReactProvider>
       </body>
     </html>
   );

@@ -4,12 +4,11 @@
     "plugins": [{ "name": "next" }],
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["src/*"]
     }
   },
   "include": [
-    "app",
-    "lib",
+    "src",
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
