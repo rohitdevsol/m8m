@@ -1,7 +1,9 @@
+import { requireAuth } from "@/lib/auth-utils";
 import { caller } from "@/trpc/server";
 import { prisma } from "@repo/database";
 
 export default async function IndexPage() {
+  await requireAuth();
   const users = await caller.findUsers();
 
   return (

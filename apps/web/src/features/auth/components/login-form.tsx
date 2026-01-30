@@ -50,8 +50,22 @@ export default function LoginForm() {
   });
 
   const onSubmit = async (values: loginFormvalues) => {
-    console.log(values);
-    form.reset(defaultValues);
+    await authClient.signIn.email(
+      {
+        email: values.email,
+        password: values.password,
+      },
+      {
+        onSuccess: () => {
+          toast.success("Login successful");
+          form.reset(defaultValues);
+          router.push("/");
+        },
+        onError: (ctx) => {
+          toast.error(ctx.error.message);
+        },
+      },
+    );
   };
 
   const isPending = form.formState.isSubmitting;
