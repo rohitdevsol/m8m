@@ -13,6 +13,7 @@
     "dev": "dotenv -- turbo run dev",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "generate": "dotenv -- turbo run generate",
+    "studio": "dotenv -- turbo run db:studio",
     "lint": "turbo run lint"
   },
   "devDependencies": {

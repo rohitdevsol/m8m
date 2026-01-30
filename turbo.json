@@ -43,6 +43,12 @@
         "DATABASE_URL"
       ]
     },
+    "db:studio": {
+      "cache": false,
+      "env": [
+        "DATABASE_URL"
+      ]
+    },
     "db:seed": {
       "cache": false,
       "env": [

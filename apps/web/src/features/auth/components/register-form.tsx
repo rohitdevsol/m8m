@@ -21,18 +21,18 @@ import {
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
-  FormLabel,
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { authClient } from "@/lib/auth-client";
 import { RequiredLabel } from "@/components/ui/required-label";
+import { Loader } from "lucide-react";
 
 const registerSchema = z
   .object({
+    name: z.string().min(2, "Minimum length should be 2"),
     email: z.email("Please enter a valid email"),
     password: z.string().min(6, "Minimum length should be 6"),
     confirmPassword: z.string().min(6, "Minimum length should be 6"),
@@ -46,8 +46,10 @@ type RegisterFormValues = z.infer<typeof registerSchema>;
 export default function SignupForm() {
   const router = useRouter();
   const defaultValues = {
+    name: "",
     email: "",
     password: "",
+    confirmPassword: "",
   };
   const form = useForm<RegisterFormValues>({
     resolver: zodResolver(registerSchema),
@@ -55,7 +57,23 @@ export default function SignupForm() {
   });
 
   const onSubmit = async (values: RegisterFormValues) => {
-    console.log(values);
+    await authClient.signUp.email(
+      {
+        name: values.name,
+        email: values.email,
+        password: values.password,
+        callbackURL: "/",
+      },
+      {
+        onSuccess: () => {
+          router.push("/");
+        },
+        onError: (ctx) => {
+          toast.error(ctx?.error?.message);
+        },
+      },
+    );
+
     form.reset(defaultValues);
   };
 
@@ -91,6 +109,24 @@ export default function SignupForm() {
                   </Button>
                 </div>
                 <div className="grid gap-6">
+                  {/* Name */}
+                  <FormField
+                    control={form.control}
+                    name="name"
+                    render={({ field }) => (
+                      <FormItem>
+                        <RequiredLabel>Name</RequiredLabel>
+                        <FormControl>
+                          <Input
+                            type="Name"
+                            placeholder="John Doe"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
                   {/* Email */}
                   <FormField
                     control={form.control}
@@ -149,6 +185,9 @@ export default function SignupForm() {
                   />
 
                   <Button type="submit" disabled={isPending} className="w-full">
+                    {isPending && (
+                      <Loader className="mr-2 h-4 w-4 animate-spin" />
+                    )}
                     Sign Up
                   </Button>
                 </div>
