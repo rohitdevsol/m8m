@@ -3,16 +3,23 @@
   "name": "web",
   "version": "1.0.0",
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
+    "dev": "dotenv -e ../../.env -- next dev",
+    "build": "dotenv -e ../../.env -- next build",
     "start": "next start",
     "lint": "eslint . --max-warnings 0"
   },
   "dependencies": {
+    "@tanstack/react-query": "^5.90.20",
+    "@trpc/client": "^11.9.0",
+    "@trpc/server": "^11.9.0",
+    "@trpc/tanstack-react-query": "^11.9.0",
     "better-auth": "^1.4.18",
+    "client-only": "^0.0.1",
     "next": "14.2.35",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "server-only": "^0.0.1",
+    "zod": "^4.3.6"
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "^14.1.1",

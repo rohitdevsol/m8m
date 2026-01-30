@@ -1,7 +1,8 @@
+import { caller } from "@/trpc/server";
 import { prisma } from "@repo/database";
 
 export default async function IndexPage() {
-  const users = await prisma.user.findMany();
+  const users = await caller.findUsers();
 
   return (
     <div>
