@@ -4,13 +4,14 @@ import { caller } from "@/trpc/server";
 
 export default async function IndexPage() {
   await requireAuth();
-  const users = await caller.findUsers();
+  const data = await caller.findAccounts();
+  console.log(data);
 
   return (
     <div>
       <h1>Hello World</h1>
       <CustomButton />
-      <pre>{JSON.stringify(users, null, 2)}</pre>
+      <pre>{JSON.stringify(data, null, 2)}</pre>
     </div>
   );
 }
