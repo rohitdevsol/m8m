@@ -8,5 +8,7 @@ export const auth = betterAuth({
   }),
   emailAndPassword: {
     enabled: true,
+    autoSignIn: true, // directly make the user sign in after signup
   },
+  socialProviders: {},
 });
