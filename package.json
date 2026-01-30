@@ -10,10 +10,11 @@
     "db:migrate:dev": "dotenv -- turbo run db:migrate:dev",
     "db:push": "dotenv -- turbo run db:push",
     "db:seed": "dotenv -- turbo run db:seed",
+    "generate": "dotenv -- turbo run generate",
+    "db:migrate:reset": "dotenv -- turbo run db:migrate:reset",
+    "studio": "dotenv -- turbo run db:studio",
     "dev": "dotenv -- turbo run dev",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "generate": "dotenv -- turbo run generate",
-    "studio": "dotenv -- turbo run db:studio",
     "lint": "turbo run lint"
   },
   "devDependencies": {
