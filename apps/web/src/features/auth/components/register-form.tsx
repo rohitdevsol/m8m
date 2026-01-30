@@ -83,8 +83,12 @@ export default function SignupForm() {
     <div className="flex flex-col gap-6">
       <Card>
         <CardHeader className="text-center">
-          <CardTitle>Get Started</CardTitle>
-          <CardDescription>Create your account to get started</CardDescription>
+          <CardTitle className="text-2xl font-bold tracking-tight">
+            Get Started
+          </CardTitle>
+          <CardDescription className="text-muted-foreground/70">
+            Create your account to get started
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <Form {...form}>
@@ -93,18 +97,30 @@ export default function SignupForm() {
                 <div className="flex flex-col gap-4">
                   <Button
                     variant="outline"
-                    className="w-full"
+                    className="w-full flex justify-center items-center"
                     type="button"
                     disabled={isPending}
                   >
+                    <Image
+                      src={"./github.svg"}
+                      alt="GitHub"
+                      height={20}
+                      width={20}
+                    />
                     Continue with GitHub
                   </Button>
                   <Button
                     variant="outline"
-                    className="w-full"
+                    className="w-full flex justify-center items-center"
                     type="button"
                     disabled={isPending}
                   >
+                    <Image
+                      src={"./google.svg"}
+                      alt="GitHub"
+                      height={20}
+                      width={20}
+                    />
                     Continue with Google
                   </Button>
                 </div>
@@ -171,7 +187,7 @@ export default function SignupForm() {
                     name="confirmPassword"
                     render={({ field }) => (
                       <FormItem>
-                        <RequiredLabel>Password</RequiredLabel>
+                        <RequiredLabel>Confirm Password</RequiredLabel>
                         <FormControl>
                           <Input
                             type="password"

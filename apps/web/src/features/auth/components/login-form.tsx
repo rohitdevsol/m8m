@@ -73,8 +73,8 @@ export default function LoginForm() {
 
   return (
     <div className="flex flex-col gap-6">
-      <Card className="border-none bg-transparent shadow-none">
-        <CardHeader className="text-center pb-2">
+      <Card>
+        <CardHeader className="text-center">
           <CardTitle className="text-2xl font-bold tracking-tight">
             Welcome back
           </CardTitle>
@@ -90,18 +90,30 @@ export default function LoginForm() {
                 <div className="flex flex-col gap-4">
                   <Button
                     variant="outline"
-                    className="w-full"
+                    className="w-full flex justify-center items-center"
                     type="button"
                     disabled={isPending}
                   >
+                    <Image
+                      src={"./github.svg"}
+                      alt="GitHub"
+                      height={20}
+                      width={20}
+                    />
                     Continue with GitHub
                   </Button>
                   <Button
                     variant="outline"
-                    className="w-full"
+                    className="w-full flex justify-center items-center"
                     type="button"
                     disabled={isPending}
                   >
+                    <Image
+                      src={"./google.svg"}
+                      alt="GitHub"
+                      height={20}
+                      width={20}
+                    />
                     Continue with Google
                   </Button>
                 </div>

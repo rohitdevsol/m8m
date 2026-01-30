@@ -1,5 +1,4 @@
-import AuthLayout from "@/components/auth-layout";
-import { ModeToggle } from "@/components/mode-toggle";
+import AuthLayout from "@/features/auth/components/auth-layout";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
