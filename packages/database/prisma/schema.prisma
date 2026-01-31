@@ -73,6 +73,11 @@ model Verification {
   @@map("verification")
 }
 
+model Workflow {
+  id String @id @default(uuid())
+  name String
+}
+
 model WorkflowRun {
   id        String   @id @default(uuid())
   userId    String
