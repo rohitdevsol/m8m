@@ -1,17 +1,10 @@
-import { z } from "zod";
-import { baseProcedure, createTRPCRouter, protectedProcedure } from "../init";
-import { prisma } from "@repo/database";
+// import { z } from "zod";
+import { createTRPCRouter } from "../init";
+
+import { workflowsRouter } from "@/features/workflows/servers/route";
 
 export const appRouter = createTRPCRouter({
-  findAccounts: protectedProcedure.query(({ ctx }) => {
-    console.log("user id", { userId: ctx.auth.user.id });
-
-    return prisma.account.findMany({
-      where: {
-        userId: ctx.auth.user.id,
-      },
-    });
-  }),
+  workflows: workflowsRouter,
 });
 // export type definition of API
 export type AppRouter = typeof appRouter;
