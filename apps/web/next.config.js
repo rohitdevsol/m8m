@@ -3,6 +3,7 @@
  */
 module.exports = {
   reactStrictMode: true,
+  devIndicators: false,
   async redirects() {
     return [
       {
