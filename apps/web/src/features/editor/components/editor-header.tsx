@@ -125,7 +125,8 @@ export function EditorHeader({ workflowId }: { workflowId: string }) {
       <SidebarTrigger />
       <EditorBreadcrumbs workflowId={workflowId} />
       <EditorSaveButton workflowId={workflowId} />
-      {/* <ModeToggle /> */}
+
+      <ModeToggle />
     </header>
   );
 }
