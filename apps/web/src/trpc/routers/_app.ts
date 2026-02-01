@@ -1,7 +1,7 @@
 // import { z } from "zod";
 import { createTRPCRouter } from "../init";
 
-import { workflowsRouter } from "@/features/workflows/servers/route";
+import { workflowsRouter } from "@/features/workflows/servers/routers";
 
 export const appRouter = createTRPCRouter({
   workflows: workflowsRouter,
