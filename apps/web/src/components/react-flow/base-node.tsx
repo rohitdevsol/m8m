@@ -1,27 +1,40 @@
-import type { ComponentProps } from "react";
+import { forwardRef, HTMLAttributes, type ComponentProps } from "react";
 
 import { cn } from "@/lib/utils";
+import { NodeStatus } from "./node-status-indicator";
+import { CheckCircleIcon, Loader2Icon, XCircleIcon } from "lucide-react";
 
-export function BaseNode({ className, ...props }: ComponentProps<"div">) {
-  return (
-    <div
-      className={cn(
-        "bg-card text-card-foreground relative rounded-md border",
-        "hover:ring-1",
-        // React Flow displays node elements inside of a `NodeWrapper` component,
-        // which compiles down to a div with the class `react-flow__node`.
-        // When a node is selected, the class `selected` is added to the
-        // `react-flow__node` element. This allows us to style the node when it
-        // is selected, using Tailwind's `&` selector.
-        "[.react-flow\\_\\_node.selected_&]:border-muted-foreground",
-        "[.react-flow\\_\\_node.selected_&]:shadow-lg",
-        className,
-      )}
-      tabIndex={0}
-      {...props}
-    />
-  );
+interface BaseNodeProps extends HTMLAttributes<HTMLDivElement> {
+  status?: NodeStatus;
 }
+export const BaseNode = forwardRef<HTMLDivElement, BaseNodeProps>(
+  ({ className, status, ...props }, ref) => {
+    return (
+      <div
+        ref={ref}
+        className={cn(
+          "bg-card text-card-foreground relative rounded-sm border border-muted-foreground",
+          "hover:bg-accent",
+
+          className,
+        )}
+        tabIndex={0}
+      >
+        {props.children}
+        {status === "error" && (
+          <XCircleIcon className="absolute right-0.5 bottom-0.5 size-2 text-red-700 stroke-3" />
+        )}
+
+        {status === "success" && (
+          <CheckCircleIcon className="absolute right-0.5 bottom-0.5 size-2 text-green-700 stroke-3" />
+        )}
+        {status === "loading" && (
+          <Loader2Icon className="absolute -right-0.5 -bottom-0.5 size-2 text-blue-700 stroke-3 animate-spin" />
+        )}
+      </div>
+    );
+  },
+);
 
 /**
  * A container for a consistent header layout intended to be used inside the
