@@ -10,7 +10,7 @@ export const AddNodeButton = memo(() => {
   return (
     <NodeSelector open={selectorOpen} onOpenChange={setSelectorOpen}>
       <Button
-        onClick={() => {}}
+        // onClick={() => {}}
         size="icon"
         variant="default"
         className="bg-primary/80 text-primary-foreground hover:bg-primary/90"
