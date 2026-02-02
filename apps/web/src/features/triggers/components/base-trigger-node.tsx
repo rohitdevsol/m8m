@@ -1,6 +1,6 @@
 "use client";
 
-import { type NodeProps, Position } from "@xyflow/react";
+import { type NodeProps, Position, useReactFlow } from "@xyflow/react";
 import type { LucideIcon } from "lucide-react";
 import Image from "next/image";
 import { memo, type ReactNode } from "react";
@@ -11,7 +11,7 @@ import { WorkflowNode } from "@/components/workflow-node";
 interface BaseTriggerNodeProps extends NodeProps {
   icon: LucideIcon | string;
   name: string;
-  // description: string;
+  description?: string;
   children?: ReactNode;
   //   status?: NodeStatus;
   onSettings?: () => void;
@@ -19,11 +19,32 @@ interface BaseTriggerNodeProps extends NodeProps {
 }
 
 export const BaseTriggerNode = memo((props: BaseTriggerNodeProps) => {
-  const { icon: Icon, name, children, onSettings, onDoubleClick } = props;
+  const {
+    id,
+    icon: Icon,
+    name,
+    description,
+    children,
+    onSettings,
+    onDoubleClick,
+  } = props;
 
   //todo -> add delete
+  const { setNodes, setEdges } = useReactFlow();
 
-  const handleDelete = () => {};
+  const handleDelete = () => {
+    setNodes((currentNode) => {
+      const updatedNodes = currentNode.filter((node) => node.id !== id);
+      return updatedNodes;
+    });
+
+    setEdges((currentEdge) => {
+      const updatedEdges = currentEdge.filter(
+        (edge) => edge.source !== id && edge.target !== id,
+      );
+      return updatedEdges;
+    });
+  };
   return (
     <WorkflowNode name={name} onDelete={handleDelete} onSettings={onSettings}>
       {/* Wrap in node status indicator */}
