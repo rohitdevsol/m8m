@@ -75,7 +75,7 @@ model Verification {
 }
 
 model Workflow {
-  id String @id @default(uuid())
+  id String @id @default(cuid())
   name String
 
   createdAt DateTime @default(now())
@@ -90,7 +90,7 @@ model Workflow {
 }
 
 model Node{
-  id String @id @default(uuid())
+  id String @id @default(cuid())
   name String
   type NodeType
   position Json 
@@ -106,7 +106,7 @@ model Node{
 }
 
 model Connection{
-  id String @id @default(uuid())
+  id String @id @default(cuid())
   workflowId String
   fromNodeId String
   toNodeId String
@@ -125,7 +125,7 @@ model Connection{
 }
 
 model WorkflowRun {
-  id        String   @id @default(uuid())
+  id        String   @id @default(cuid())
   userId    String
   workflowId String
 
@@ -144,4 +144,6 @@ model WorkflowRun {
 
 enum NodeType{
   INITIAL
+  MANUAL_TRIGGER
+  HTTP_REQUEST
 }
