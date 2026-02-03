@@ -73,7 +73,8 @@ export const EditorNameInput = ({ workflowId }: { workflowId: string }) => {
   }, [isEditing]);
 
   const handleSave = async () => {
-    if (name === workflow.name) {
+    if (name === workflow.name || name === "") {
+      setName(workflow.name);
       setIsEditing(false);
       return;
     }
