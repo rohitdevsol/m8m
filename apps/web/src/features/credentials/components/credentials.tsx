@@ -11,16 +11,18 @@ import {
   LoadingView,
 } from "@/components/entity-components";
 import {
-  useCreateCredential,
   useRemoveCredential,
+  useSuspenseCredential,
   useSuspenseCredentials,
 } from "../hooks/use-credentials";
 import { useRouter } from "next/navigation";
 import { useCredentialsParams } from "../hooks/use-credentials-params";
 import { useEntitySearch } from "@/hooks/use-entity-search";
-import { KeyIcon } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import type { Credential } from "@repo/database";
+import { CredentialType } from "@/config/node-types";
+import Image from "next/image";
+import { CredentialForm } from "./credential-form";
 
 export const CredentialsList = () => {
   const credentials = useSuspenseCredentials();
@@ -33,6 +35,12 @@ export const CredentialsList = () => {
       emptyView={<CredentialsEmpty />}
     />
   );
+};
+
+const credentialLogos: Record<CredentialType, string> = {
+  [CredentialType.OPENAI]: "/openai.svg",
+  [CredentialType.ANTHROPIC]: "/anthropic.svg",
+  [CredentialType.GEMINI]: "/gemini.svg",
 };
 
 export const CredentialsSearch = () => {
@@ -94,11 +102,11 @@ export const CredentialsContainer = ({
 };
 
 export const CredentialsLoading = () => {
-  return <LoadingView message="Loading workflows" />;
+  return <LoadingView message="Loading credentials" />;
 };
 
 export const CredentialsError = () => {
-  return <ErrorView message="Loading workflows" />;
+  return <ErrorView message="Loading credentials" />;
 };
 
 export const CredentialsEmpty = () => {
@@ -117,8 +125,13 @@ export const CredentialsEmpty = () => {
   );
 };
 
-export const CredentialItem = ({ data }: { data: Credential }) => {
+export const CredentialItem = ({
+  data,
+}: {
+  data: Omit<Credential, "userId" | "value">;
+}) => {
   const removeCredential = useRemoveCredential();
+  const logo = credentialLogos[data.type] || "/openai.svg";
 
   const handleRemove = () => {
     removeCredential.mutate({ id: data.id });
@@ -137,7 +150,7 @@ export const CredentialItem = ({ data }: { data: Credential }) => {
       image={
         <>
           <div className="size-8 flex items-center justify-center">
-            <KeyIcon className="size-5 text-muted-foreground" />
+            <Image src={logo} alt={data.type} width={20} height={20} />
           </div>
         </>
       }
@@ -146,4 +159,10 @@ export const CredentialItem = ({ data }: { data: Credential }) => {
       isRemoving={removeCredential.isPending}
     />
   );
+};
+
+export const CredentialView = ({ credentialId }: { credentialId: string }) => {
+  const { data: credential } = useSuspenseCredential(credentialId);
+
+  return <CredentialForm initialData={credential} />;
 };

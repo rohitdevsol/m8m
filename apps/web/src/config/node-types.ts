@@ -5,10 +5,10 @@ export const NodeType = {
 } as const;
 
 export const CredentialType = {
-  OPEN_API: "OPEN_API",
+  OPENAI: "OPENAI",
   GEMINI: "GEMINI",
   ANTHROPIC: "ANTHROPIC",
-};
+} as const;
 
 export type NodeType = (typeof NodeType)[keyof typeof NodeType];
 export type CredentialType =
