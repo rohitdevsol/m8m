@@ -100,7 +100,7 @@ model Workflow {
   updatedAt DateTime @updatedAt
 
   userId String
-  workflowRuns WorkflowRun[]
+  executions Execution[]
   nodes Node[]
   connections Connection[]
 
@@ -145,22 +145,23 @@ model Connection{
   @@unique([fromNodeId, toNodeId,fromOutput,toInput])
 }
 
-model WorkflowRun {
+model Execution {
   id        String   @id @default(cuid())
-  userId    String
   workflowId String
 
-  status    String   @default("pending") 
+  status    ExecutionStatus @default(PENDING)
+  error     String? @db.Text
+  errorStack String? @db.Text
+  output    Json?
   step      Int      @default(1)
 
   lockedBy  String?
   lockedAt  DateTime?
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  startedAt DateTime @default(now())
+  completedAt DateTime?
 
-  // user      User     @relation(fields: [userId], references: [id])
-  workflow  Workflow @relation(fields: [workflowId], references: [id])
+  workflow  Workflow @relation(fields: [workflowId], references: [id], onDelete: Cascade)
 }
 
 enum NodeType{
@@ -173,4 +174,11 @@ enum CredentialType{
   OPENAI
   ANTHROPIC
   GEMINI
+}
+
+enum ExecutionStatus{
+  PENDING
+  RUNNING
+  SUCCESS
+  FAILED
 }
