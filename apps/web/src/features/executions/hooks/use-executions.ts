@@ -1,7 +1,13 @@
 import { useTRPC } from "@/trpc/client";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import {
+  useMutation,
+  useQuery,
+  useQueryClient,
+  useSuspenseQuery,
+} from "@tanstack/react-query";
 
 import { useExecutionsParams } from "./use-execution-params";
+import { toast } from "sonner";
 
 /**
  * Hook to fetch all the executions using suspense
@@ -21,4 +27,23 @@ export const useSuspenseExecutions = () => {
 export const useSuspenseExecution = (id: string) => {
   const trpc = useTRPC();
   return useSuspenseQuery(trpc.executions.getOne.queryOptions({ id }));
+};
+
+export const useCreateExecutionThroughManualTrigger = () => {
+  const trpc = useTRPC();
+  const queryClient = useQueryClient();
+  return useMutation(
+    trpc.executions.createExecution.mutationOptions({
+      onSuccess: (data) => {
+        toast.success(`Workflow is queued`);
+        queryClient.invalidateQueries(trpc.executions.getMany.queryOptions({}));
+        queryClient.invalidateQueries(
+          trpc.executions.getOne.queryOptions({ id: data.id }),
+        );
+      },
+      onError: (error) => {
+        toast.error(`Failed to process workflow: ${error.message}`);
+      },
+    }),
+  );
 };

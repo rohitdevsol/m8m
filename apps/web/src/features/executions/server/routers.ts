@@ -16,6 +16,23 @@ export const executionsRouter = createTRPCRouter({
       });
     }),
 
+  createExecution: protectedProcedure
+    .input(z.object({ workflowId: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      await prisma.workflow.findUniqueOrThrow({
+        where: {
+          id: input.workflowId,
+          userId: ctx.auth.user.id,
+        },
+      });
+      return prisma.execution.create({
+        data: {
+          workflowId: input.workflowId,
+          status: "RUNNING",
+        },
+      });
+    }),
+
   getMany: protectedProcedure
     .input(
       z.object({
