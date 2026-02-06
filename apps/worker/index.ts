@@ -1,7 +1,6 @@
 import { TOPIC_NAME, kafka } from "@repo/kafka/client";
 import { prisma } from "@repo/database";
-import { createGraph } from "./utils/graph";
-import { getExecutor } from "./executors/registry/executor-registry";
+import { runExecution } from "./execution-runnner";
 
 //this is the consumer which will get the data from producer(via kafka)
 
@@ -10,10 +9,6 @@ import { getExecutor } from "./executors/registry/executor-registry";
   const consumer = kafka.consumer({
     groupId: "main",
   });
-
-  const producer = kafka.producer();
-  //connect producer
-  await producer.connect();
 
   //connect consumer
   await consumer.connect();
@@ -25,97 +20,37 @@ import { getExecutor } from "./executors/registry/executor-registry";
   await consumer.run({
     autoCommit: false,
     eachMessage: async ({ topic, message, partition }) => {
-      //return if there is no message
-      if (!message.value?.toString()) {
-        return;
-      }
+      if (!message.value) return;
 
-      //parse the message value
-      const data = JSON.parse(message.value.toString()) as {
-        executionId: string;
-      };
-      const { executionId } = data;
+      const { executionId } = JSON.parse(message.value.toString());
 
-      const executionDetails = await prisma.execution.findFirst({
-        where: {
-          id: executionId,
-        },
-        include: {
-          workflow: {
-            include: {
-              //pick nodes and connections
-              nodes: true,
-              connections: true,
-              //pick the user credentials
-              user: {
-                include: {
-                  credentials: true,
-                },
-              },
-            },
+      try {
+        await runExecution(executionId);
+        await prisma.execution.update({
+          where: { id: executionId },
+          data: {
+            status: "SUCCESS",
+            completedAt: new Date(),
           },
-        },
-      });
-
-      //check the execution status
-      if (executionDetails?.status === "FAILED") {
-        return;
-      }
-
-      const nodes = executionDetails?.workflow.nodes;
-      const edges = executionDetails?.workflow.connections;
-
-      if (!nodes?.length) {
-        console.error("No nodes available");
-        return;
-      }
-      if (!edges?.length) {
-        console.error("No edges available");
-        return;
-      }
-
-      const outputs: Record<string, any> = {};
-
-      const { childrenMap, indegreeMap, readyQueue } = createGraph(
-        nodes!,
-        edges!,
-      );
-
-      while (readyQueue.length !== 0) {
-        //get the nodeId
-        const nodeId = readyQueue.shift()!;
-        //find the node from nodes
-        const node = nodes.find((n) => n.id === nodeId);
-        if (!node) continue;
-
-        //run some handler based on the nodeType
-        const executor = getExecutor(node.type);
-
-        if (executor === null) {
-          console.error(`No executor found for type ${node.type}`);
-          return;
-        }
-        const res = await executor({
-          context: node.data as Record<string, unknown>,
-          nodeId,
-          inputs: outputs,
-          credentials: executionDetails?.workflow.user.credentials!,
         });
-
-        outputs[node.id] = res;
-
-        //save the output
-
-        // fixing for undefined
-        const parent = childrenMap[nodeId] ?? [];
-        for (const child of parent) {
-          indegreeMap[child]!--;
-
-          if (indegreeMap[child] === 0) {
-            readyQueue.push(child);
-          }
-        }
+      } catch (err) {
+        console.error("Execution failed:", err);
+        await prisma.execution.update({
+          where: { id: executionId },
+          data: {
+            status: "FAILED",
+          },
+        });
       }
+
+      // always commit
+      await consumer.commitOffsets([
+        {
+          topic,
+          partition,
+          offset: (Number(message.offset) + 1).toString(),
+        },
+      ]);
     },
   });
 })();
