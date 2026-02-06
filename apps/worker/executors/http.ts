@@ -12,11 +12,13 @@ type HttpHandlerInput = {
 
 export async function httpHandler({ node, inputs }: HttpHandlerInput) {
   const parsed = httpSchema.parse(node.data);
+
   const { endpoint, method, body } = parsed;
 
   const url = resolveTemplate(endpoint, inputs);
 
   const resolvedBody = body ? resolveTemplate(body, inputs) : undefined;
+  console.log("[resolvedBody]", resolvedBody);
 
   const res = await fetch(url, {
     method,
