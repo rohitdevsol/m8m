@@ -25,11 +25,21 @@ export const executionsRouter = createTRPCRouter({
           userId: ctx.auth.user.id,
         },
       });
-      return prisma.execution.create({
-        data: {
-          workflowId: input.workflowId,
-          status: "RUNNING",
-        },
+      return prisma.$transaction(async (tx) => {
+        const execution = await tx.execution.create({
+          data: {
+            workflowId: input.workflowId,
+            status: "PENDING",
+          },
+        });
+
+        await tx.executionQueue.create({
+          data: {
+            executionId: execution.id,
+          },
+        });
+
+        return execution;
       });
     }),
 
