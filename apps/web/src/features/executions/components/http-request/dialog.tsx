@@ -22,6 +22,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { httpSchema } from "@repo/types";
 import { useEffect } from "react";
 import z from "zod";
 import {
@@ -32,12 +33,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-const formSchema = z.object({
-  endpoint: z.url({ message: "Please enter a valid URL" }),
-  method: z.enum(["GET", "POST", "PUT", "PATCH", "DELETE"]),
-  body: z.string().optional(),
-  // .refine()
-});
+const formSchema = httpSchema;
 
 export type HttpRequestFormValues = z.infer<typeof formSchema>;
 

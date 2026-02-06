@@ -5,7 +5,7 @@ import { GlobeIcon } from "lucide-react";
 import { memo, useState } from "react";
 
 import { BaseExecutionNode } from "../base-execution-node";
-import { HttpRequestFormValues, HttpRequestDialog } from "./dialog";
+import { HttpRequestDialog, HttpRequestFormValues } from "./dialog";
 
 type HttpRequestNodeData = {
   endpoint?: string;
