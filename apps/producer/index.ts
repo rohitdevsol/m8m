@@ -1,3 +1,4 @@
+import "dotenv/config";
 import { TOPIC_NAME, kafka } from "@repo/kafka/client";
 import { prisma } from "@repo/database";
 
