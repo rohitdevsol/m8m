@@ -12,6 +12,8 @@
     "db:seed": "dotenv -- turbo run db:seed",
     "generate": "dotenv -- turbo run generate",
     "db:migrate:reset": "dotenv -- turbo run db:migrate:reset",
+    "worker:dev": "dotenv -- turbo run worker:dev",
+    "producer:dev": "dotenv -- turbo run producer:dev",
     "studio": "dotenv -- turbo run db:studio",
     "dev": "dotenv -- turbo run dev",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",

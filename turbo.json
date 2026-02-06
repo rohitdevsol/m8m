@@ -72,6 +72,20 @@
         "NEXT_PUBLIC_*"
       ]
     },
+    "worker:dev": {
+      "cache": false,
+      "persistent": true,
+      "env": [
+        "DATABASE_URL"
+      ]
+    },
+    "producer:dev": {
+      "cache": false,
+      "persistent": true,
+      "env": [
+        "DATABASE_URL"
+      ]
+    },
     "generate": {
       "dependsOn": [
         "^generate"

@@ -1,19 +1,31 @@
-version: "3"
+services:
+  kafka:
+    image: redpandadata/redpanda:latest
+    container_name: redpanda
+
+    command:
+      - redpanda
+      - start
+      - --overprovisioned
+      - --smp
+      - "1"
+      - --memory
+      - "1G"
+      - --reserve-memory
+      - "0M"
+      - --node-id
+      - "0"
+      - --check=false
+      - --kafka-addr
+      - PLAINTEXT://0.0.0.0:9092
+      - --advertise-kafka-addr
+      - PLAINTEXT://localhost:9092
+
+    ports:
+      - "9092:9092"
+
+    volumes:
+      - redpanda_data:/var/lib/redpanda/data
 
 volumes:
-  database:
-    driver: local
-
-services:
-  db:
-    platform: linux/amd64
-    image: postgres:15 # Use a specific version of Postgres
-    restart: always
-    environment:
-      - POSTGRES_USER=sebi
-      - POSTGRES_PASSWORD=sebi_test_4444
-      - POSTGRES_DB=turborepo
-    ports:
-      - '5432:5432' # Expose the Postgres port to your local machine
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
+  redpanda_data:
