@@ -162,6 +162,12 @@ model Execution {
   completedAt DateTime?
 
   workflow  Workflow @relation(fields: [workflowId], references: [id], onDelete: Cascade)
+  executions ExecutionQueue[]
+}
+
+model ExecutionQueue {
+  executionId String @id @default(cuid())
+  execution Execution @relation(fields: [executionId],references: [id])
 }
 
 enum NodeType{
