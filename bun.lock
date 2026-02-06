@@ -101,6 +101,7 @@
         "@next/eslint-plugin-next": "^14.1.1",
         "@repo/database": "*",
         "@repo/eslint-config": "*",
+        "@repo/types": "*",
         "@repo/typescript-config": "*",
         "@types/node": "^20.11.24",
         "@types/react": "^18.2.61",
@@ -115,6 +116,7 @@
       "devDependencies": {
         "@repo/database": "*",
         "@repo/kafka": "*",
+        "@repo/types": "*",
         "@types/bun": "latest",
       },
       "peerDependencies": {
@@ -163,6 +165,18 @@
       "name": "@repo/kafka",
       "dependencies": {
         "kafkajs": "^2.2.4",
+      },
+      "devDependencies": {
+        "@types/bun": "latest",
+      },
+      "peerDependencies": {
+        "typescript": "^5",
+      },
+    },
+    "packages/types": {
+      "name": "@repo/types",
+      "dependencies": {
+        "zod": "^4.3.6",
       },
       "devDependencies": {
         "@types/bun": "latest",
@@ -566,6 +580,8 @@
     "@repo/eslint-config": ["@repo/eslint-config@workspace:packages/config-eslint"],
 
     "@repo/kafka": ["@repo/kafka@workspace:packages/kafka"],
+
+    "@repo/types": ["@repo/types@workspace:packages/types"],
 
     "@repo/typescript-config": ["@repo/typescript-config@workspace:packages/config-typescript"],
 
