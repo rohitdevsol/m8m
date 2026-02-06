@@ -1,6 +1,8 @@
 import { TOPIC_NAME, kafka } from "@repo/kafka/client";
 import { prisma } from "@repo/database";
 
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
 (async () => {
   //make a producer instance
   const producer = kafka.producer();
@@ -16,10 +18,13 @@ import { prisma } from "@repo/database";
         where: {},
         take: 10,
       });
-
+      if (!pendingEntries.length) {
+        await sleep(1000);
+        continue;
+      }
       //send them to kafka via producer
 
-      producer.send({
+      await producer.send({
         topic: TOPIC_NAME,
         messages: pendingEntries.map((entry) => {
           return {
@@ -39,5 +44,7 @@ import { prisma } from "@repo/database";
     } catch (error) {
       console.error(error);
     }
+
+    await new Promise((r) => setTimeout(r, 1000));
   }
 })();
