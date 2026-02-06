@@ -91,8 +91,8 @@ import { createGraph } from "./utils/graph";
         //save the output
 
         // fixing for undefined
-        const children = childrenMap[nodeId] ?? [];
-        for (const child of children) {
+        const parent = childrenMap[nodeId] ?? [];
+        for (const child of parent) {
           indegreeMap[child]!--;
 
           if (indegreeMap[child] === 0) {
