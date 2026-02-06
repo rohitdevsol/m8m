@@ -1,24 +1,42 @@
+import type { Credential, Node } from "@repo/database";
 import { httpHandler } from "./executors/http";
 import { manualTriggerHandler } from "./executors/manual";
 
+function flattenInputs(inputs: Record<string, any>) {
+  const result: Record<string, any> = {};
+
+  for (const val of Object.values(inputs)) {
+    if (val && typeof val === "object") {
+      Object.assign(result, val);
+    }
+  }
+
+  return result;
+}
+
 export async function runNode(
-  node: any,
+  node: Partial<Node>,
   outputs: Record<string, any>,
-  credentials: any[],
+  credentials: Partial<Credential[]>,
 ) {
+  const flatInputs = flattenInputs(outputs);
   switch (node.type) {
     case "HTTP_REQUEST":
       return await httpHandler({
         node,
-        inputs: outputs,
+        inputs: flatInputs,
         credentials,
       });
+      break;
 
-    // case "MANUAL_TRIGGER":
-    //   return await manualTriggerHandler({
-    //     node,
-    //     inputs: outputs,
-    //   });
+    case "MANUAL_TRIGGER":
+      const { id: nodeId } = node;
+      const output = await manualTriggerHandler({
+        userId: credentials[0]?.userId!,
+      });
+
+      outputs[nodeId!] = output;
+      break;
 
     case "INITIAL":
       return null;

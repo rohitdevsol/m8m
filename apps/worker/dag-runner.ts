@@ -1,7 +1,12 @@
+import type { Connection, Credential, Node } from "@repo/database";
 import { runNode } from "./node-runner";
 import { createGraph } from "./utils/graph";
 
-export async function runDag(nodes: any[], edges: any[], credentials: any[]) {
+export async function runDag(
+  nodes: Node[],
+  edges: Connection[],
+  credentials: Partial<Credential[]>,
+) {
   const outputs: Record<string, any> = {};
 
   const { childrenMap, indegreeMap, readyQueue } = createGraph(nodes, edges);

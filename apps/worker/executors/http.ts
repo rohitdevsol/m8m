@@ -1,11 +1,9 @@
 import { httpSchema, type HttpNodeConfig } from "@repo/types";
 import { resolveTemplate } from "../utils/template";
+import type { Node } from "@repo/database";
 
 type HttpHandlerInput = {
-  node: {
-    id: string;
-    data: HttpNodeConfig;
-  };
+  node: Partial<Node>;
   inputs: Record<string, any>;
   credentials: any[];
 };
@@ -14,6 +12,10 @@ export async function httpHandler({ node, inputs }: HttpHandlerInput) {
   const parsed = httpSchema.parse(node.data);
 
   const { endpoint, method, body } = parsed;
+  console.log("[httpEndpoint]", endpoint);
+  console.log("[httpMethod]", method);
+  console.log("[httpBody]", body);
+  console.log("[currentInputs]", inputs);
 
   const url = resolveTemplate(endpoint, inputs);
 

@@ -1,18 +1,22 @@
-// utils/template.ts
-
 export function resolveTemplate(
   template: string,
   context: Record<string, any>,
 ) {
-  return template.replace(/\{\{(.*?)\}\}/g, (_, path) => {
-    const keys = path.trim().split(".");
+  if (!template) return "";
+
+  return template.replace(/\{\{\s*(.*?)\s*\}\}/g, (_, path) => {
+    const keys = path.split(".");
     let value: any = context;
 
     for (const key of keys) {
       value = value?.[key];
-      if (value === undefined) return "";
+      if (value == null) return "";
     }
 
-    return typeof value === "object" ? JSON.stringify(value) : String(value);
+    if (typeof value === "object") {
+      return JSON.stringify(value);
+    }
+
+    return String(value);
   });
 }
