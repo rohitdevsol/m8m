@@ -4,7 +4,28 @@ import { prisma } from "@repo/database";
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
+async function init() {
+  const admin = kafka.admin();
+  console.log("Admin connecting...");
+  admin.connect();
+  console.log("Adming Connection Success...");
+
+  console.log("Creating Topic ", TOPIC_NAME);
+  await admin.createTopics({
+    topics: [
+      {
+        topic: TOPIC_NAME,
+        numPartitions: 1,
+      },
+    ],
+  });
+  console.log("Topic Created Success ", TOPIC_NAME);
+
+  console.log("Disconnecting Admin..");
+  await admin.disconnect();
+}
 (async () => {
+  await init();
   //make a producer instance
   const producer = kafka.producer();
   //connect the producer
