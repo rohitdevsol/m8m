@@ -6,7 +6,8 @@
   "devDependencies": {
     "@types/bun": "latest",
     "@repo/database": "*",
-    "@repo/kafka": "*"
+    "@repo/kafka": "*",
+    "@repo/types": "*"
   },
   "peerDependencies": {
     "typescript": "^5"
