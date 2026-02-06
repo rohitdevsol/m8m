@@ -32,6 +32,10 @@ export function createGraph(
     }
   }
 
+  console.log("readyQueue", readyQueue);
+  console.log("indegreeMap", indegreeMap);
+  console.log("childrenMap", childrenMap);
+
   return {
     indegreeMap,
     childrenMap,

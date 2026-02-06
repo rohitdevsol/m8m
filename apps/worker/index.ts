@@ -1,6 +1,7 @@
 import { TOPIC_NAME, kafka } from "@repo/kafka/client";
 import { prisma } from "@repo/database";
 import { createGraph } from "./utils/graph";
+import { getExecutor } from "./executors/registry/executor-registry";
 
 //this is the consumer which will get the data from producer(via kafka)
 
@@ -74,6 +75,7 @@ import { createGraph } from "./utils/graph";
       }
 
       const outputs: Record<string, any> = {};
+
       const { childrenMap, indegreeMap, readyQueue } = createGraph(
         nodes!,
         edges!,
@@ -87,6 +89,20 @@ import { createGraph } from "./utils/graph";
         if (!node) continue;
 
         //run some handler based on the nodeType
+        const executor = getExecutor(node.type);
+
+        if (executor === null) {
+          console.error(`No executor found for type ${node.type}`);
+          return;
+        }
+        const res = await executor({
+          context: node.data as Record<string, unknown>,
+          nodeId,
+          inputs: outputs,
+          credentials: executionDetails?.workflow.user.credentials!,
+        });
+
+        outputs[node.id] = res;
 
         //save the output
 
