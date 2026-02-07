@@ -102,7 +102,7 @@ const AppSidebar = () => {
       </SidebarContent>
       <SidebarFooter>
         <SidebarMenu>
-          <SidebarMenuItem>
+          {/* <SidebarMenuItem>
             <SidebarMenuButton
               tooltip={"Upgrade to Pro"}
               className="gap-x-4 h-10 px-4"
@@ -122,12 +122,12 @@ const AppSidebar = () => {
               <CreditCardIcon className="h-4 w-4" />
               <span>Billing Portal</span>
             </SidebarMenuButton>
-          </SidebarMenuItem>
+          </SidebarMenuItem> */}
 
           <SidebarMenuItem>
             <SidebarMenuButton
               tooltip={"Sign out"}
-              className="gap-x-4 h-10 px-4
+              className="gap-x-4 h-15 px-4
               
               hover:bg-destructive/10"
               onClick={async () => {
@@ -141,8 +141,8 @@ const AppSidebar = () => {
                 });
               }}
             >
-              <LogOutIcon className="h-4 w-4 stroke-red-500" />
-              <span className="text-red-500">Sign out</span>
+              <LogOutIcon className="h-10 w-10 stroke-red-500" />
+              <span className="text-red-500 text-lg">Sign out</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
