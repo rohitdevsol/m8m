@@ -34,21 +34,6 @@ export const EditorError = () => {
   return <ErrorView message="Error loading editor" />;
 };
 
-// const initialNodes = [
-//   {
-//     id: "n1",
-//     position: { x: 0, y: 0 },
-//     data: { label: "Node 1" },
-//   },
-//   {
-//     id: "n2",
-//     position: { x: 0, y: 100 },
-//     data: { label: "Node 2" },
-//   },
-// ];
-
-// const initialEdges = [{ id: "n1-n2", source: "n1", target: "n2" }];
-
 export const Editor = ({ workflowId }: { workflowId: string }) => {
   const { data: workflow } = useSuspenseWorkflow(workflowId);
 

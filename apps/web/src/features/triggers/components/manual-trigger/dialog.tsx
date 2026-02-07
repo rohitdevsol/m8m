@@ -25,8 +25,9 @@ export const ManualTriggerDialog = ({ open, onOpenChange }: Props) => {
             Configure the settings for the manual trigger node.
           </DialogDescription>
         </DialogHeader>
-        <div className="py-4">
-          <p>
+        <div className="py-4 space-y-2">
+          <p>Name : manual</p>
+          <p className="text-muted-foreground">
             Used to manually configure a workflow, no configuration available
           </p>
         </div>

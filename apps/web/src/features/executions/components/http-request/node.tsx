@@ -3,17 +3,12 @@
 import { useReactFlow, type Node, type NodeProps } from "@xyflow/react";
 import { GlobeIcon } from "lucide-react";
 import { memo, useState } from "react";
-
+import { httpSchema } from "@repo/types";
 import { BaseExecutionNode } from "../base-execution-node";
 import { HttpRequestDialog, HttpRequestFormValues } from "./dialog";
+import z from "zod";
 
-type HttpRequestNodeData = {
-  endpoint?: string;
-  method?: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
-  body?: string;
-};
-
-type HttpRequestNodeType = Node<HttpRequestNodeData>;
+type HttpRequestNodeType = Node<z.infer<typeof httpSchema>>;
 
 export const HttpRequestNode = memo((props: NodeProps<HttpRequestNodeType>) => {
   const nodeData = props.data;
@@ -23,7 +18,9 @@ export const HttpRequestNode = memo((props: NodeProps<HttpRequestNodeType>) => {
   const description = nodeData?.endpoint
     ? `${nodeData.method || "GET"}: \n${nodeData.endpoint}`
     : "Not configured";
-  const nodeStatus = "loading";
+
+  const name = nodeData.name;
+  const nodeStatus = "initial";
 
   const handleOpenSettings = () => {
     setDialogOpen(true);
@@ -52,13 +49,16 @@ export const HttpRequestNode = memo((props: NodeProps<HttpRequestNodeType>) => {
         onOpenChange={setDialogOpen}
         onSubmit={handleSubmit}
         defaultValues={nodeData}
-        //improve this by sending initial values
       />
       <BaseExecutionNode
         {...props}
         id={props.id}
         status={nodeStatus}
-        name="HTTP Request"
+        name={
+          name
+            ? "HTTP Request" + (nodeData.name ? ` - ${nodeData.name}` : "")
+            : "HTTP Request"
+        }
         description={description}
         icon={GlobeIcon}
         onSettings={handleOpenSettings}

@@ -53,6 +53,7 @@ export const HttpRequestDialog = ({
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      name: defaultValues?.name,
       endpoint: defaultValues?.endpoint,
       method: defaultValues?.method || "GET",
       body: defaultValues?.body,
@@ -70,6 +71,7 @@ export const HttpRequestDialog = ({
   useEffect(() => {
     if (open) {
       form.reset({
+        name: defaultValues?.name,
         endpoint: defaultValues?.endpoint,
         method: defaultValues?.method || "GET",
         body: defaultValues?.body,
@@ -92,8 +94,25 @@ export const HttpRequestDialog = ({
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(handleSubmit)}
-            className="space-y-8 mt-4"
+            className="space-y-6 mt-4"
           >
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Name</FormLabel>
+                  <FormControl>
+                    <Input placeholder="getUsers or postUsers" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                  <FormDescription>
+                    Provide a name for the HTTP request node. This name will be
+                    used to refer the data fields in the execution.
+                  </FormDescription>
+                </FormItem>
+              )}
+            />
             <FormField
               control={form.control}
               name="method"
@@ -117,10 +136,10 @@ export const HttpRequestDialog = ({
                       <SelectItem value="DELETE">DELETE</SelectItem>
                     </SelectContent>
                   </Select>
+                  <FormMessage />
                   <FormDescription>
                     The HTTP method to use for the request.
                   </FormDescription>
-                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -137,11 +156,11 @@ export const HttpRequestDialog = ({
                       {...field}
                     />
                   </FormControl>
+                  <FormMessage />
                   <FormDescription>
                     Static URL or use {"{{variables}}"} for simple values or{" "}
                     {"{{json variable}}"} to stringify objects
                   </FormDescription>
-                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -166,12 +185,12 @@ export const HttpRequestDialog = ({
                         {...field}
                       />
                     </FormControl>
+                    <FormMessage />
                     <FormDescription>
                       JSON with template variables. Use {"{{variables}}"}
                       for simple values or {"{{json variable}}"} to stringify
                       objects
                     </FormDescription>
-                    <FormMessage />
                   </FormItem>
                 )}
               />
