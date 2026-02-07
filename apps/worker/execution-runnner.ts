@@ -1,3 +1,5 @@
+// execution-runner.ts
+
 import { prisma } from "@repo/database";
 import { runDag } from "./dag-runner";
 
@@ -17,13 +19,9 @@ export async function runExecution(executionId: string) {
     },
   });
 
-  if (!execution) {
-    throw new Error("Execution not found");
-  }
+  if (!execution) throw new Error("Execution not found");
 
-  if (execution.status === "FAILED") {
-    return;
-  }
+  if (execution.status === "FAILED") return;
 
   const nodes = execution.workflow.nodes;
   const edges = execution.workflow.connections;
@@ -39,5 +37,12 @@ export async function runExecution(executionId: string) {
     },
   });
 
-  await runDag(nodes, edges, execution.workflow.user.credentials);
+  const context = await runDag(
+    nodes,
+    edges,
+    execution.workflow.user,
+    execution.workflow.user.credentials,
+  );
+
+  return context;
 }
