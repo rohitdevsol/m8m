@@ -33,14 +33,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-const formSchema = httpSchema;
-
-export type HttpRequestFormValues = z.infer<typeof formSchema>;
+export type HttpRequestFormValues = z.infer<typeof httpSchema>;
 
 interface Props {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onSubmit: (values: z.infer<typeof formSchema>) => void;
+  onSubmit: (values: z.infer<typeof httpSchema>) => void;
   defaultValues?: Partial<HttpRequestFormValues>;
 }
 
@@ -50,8 +48,8 @@ export const HttpRequestDialog = ({
   onSubmit,
   defaultValues,
 }: Props) => {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof httpSchema>>({
+    resolver: zodResolver(httpSchema),
     defaultValues: {
       name: defaultValues?.name,
       endpoint: defaultValues?.endpoint,
@@ -63,7 +61,7 @@ export const HttpRequestDialog = ({
   const watchMethod = form.watch("method");
   const showBodyField = ["POST", "PUT", "PATCH"].includes(watchMethod);
 
-  const handleSubmit = (values: z.infer<typeof formSchema>) => {
+  const handleSubmit = (values: z.infer<typeof httpSchema>) => {
     onSubmit(values);
     onOpenChange(false);
   };
