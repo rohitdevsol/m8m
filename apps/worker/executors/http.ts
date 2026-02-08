@@ -19,7 +19,14 @@ export async function httpHandler({ node, inputs }: HttpHandlerInput) {
 
   const url = resolveTemplate(endpoint, inputs);
 
-  const resolvedBody = body ? resolveTemplate(body, inputs) : undefined;
+  let resolvedBody: any = undefined;
+
+  if (body) {
+    const parsed = JSON.parse(body);
+    const resolved = resolveTemplate(parsed, inputs);
+    resolvedBody = JSON.stringify(resolved);
+  }
+
   console.log("[resolvedBody]", resolvedBody);
 
   const res = await fetch(url, {

@@ -7,7 +7,7 @@ const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 async function init() {
   const admin = kafka.admin();
   console.log("Admin connecting...");
-  admin.connect();
+  await admin.connect();
   console.log("Adming Connection Success...");
 
   console.log("Creating Topic ", TOPIC_NAME);
