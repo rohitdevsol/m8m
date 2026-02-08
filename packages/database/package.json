@@ -6,7 +6,7 @@
   },
   "scripts": {
     "db:migrate:deploy": "prisma migrate deploy",
-    "db:migrate:dev": "prisma migrate dev",
+    "db:migrate:dev": "prisma migrate dev --name fix_enum",
     "db:push": "prisma db push",
     "db:migrate:reset": "prisma migrate reset --force",
     "db:seed": "tsx src/seed.ts",

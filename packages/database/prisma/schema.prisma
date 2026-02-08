@@ -159,6 +159,7 @@ model Execution {
 
   workflow  Workflow @relation(fields: [workflowId], references: [id], onDelete: Cascade)
   executions ExecutionQueue[]
+  nodeRuns NodeRun[]
 }
 
 model ExecutionQueue {
@@ -166,19 +167,49 @@ model ExecutionQueue {
   execution Execution @relation(fields: [executionId],references: [id])
 }
 
-enum NodeType{
+model NodeRun {
+  id          String   @id @default(cuid())
+
+  executionId String
+  nodeId      String
+  nodeName    String
+
+  status      NodeRunStatus
+
+  input       Json?
+  output      Json?
+  error       String?
+
+  startedAt   DateTime?
+  endedAt     DateTime?
+
+  execution   Execution @relation(fields: [executionId], references: [id])
+
+  createdAt   DateTime @default(now())
+}
+
+enum NodeRunStatus {
+  INITIAL
+  ERROR
+  SUCCESS
+  LOADING
+  SKIPPED
+}
+
+
+enum NodeType {
   INITIAL
   MANUAL_TRIGGER
   HTTP_REQUEST
 }
 
-enum CredentialType{
+enum CredentialType {
   OPENAI
   ANTHROPIC
   GEMINI
 }
 
-enum ExecutionStatus{
+enum ExecutionStatus {
   PENDING
   RUNNING
   SUCCESS
