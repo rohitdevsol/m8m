@@ -69,6 +69,8 @@
       "env": [
         "DATABASE_URL",
         "NODE_ENV",
+        "GITHUB_CLIENT_ID",
+        "GITHUB_CLIENT_SECRET",
         "NEXT_PUBLIC_*"
       ]
     },

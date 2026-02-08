@@ -10,5 +10,10 @@ export const auth = betterAuth({
     enabled: true,
     autoSignIn: true, // directly make the user sign in after signup
   },
-  socialProviders: {},
+  socialProviders: {
+    github: {
+      clientId: process.env.GITHUB_CLIENT_ID as string,
+      clientSecret: process.env.GITHUB_CLIENT_SECRET as string,
+    },
+  },
 });

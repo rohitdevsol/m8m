@@ -100,6 +100,9 @@ export default function SignupForm() {
                     className="w-full flex justify-center items-center"
                     type="button"
                     disabled={isPending}
+                    onClick={() =>
+                      authClient.signIn.social({ provider: "github" })
+                    }
                   >
                     <Image
                       src={"./github.svg"}

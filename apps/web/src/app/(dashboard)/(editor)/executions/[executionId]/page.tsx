@@ -25,7 +25,7 @@ const Page = async ({ params }: PageProps) => {
     <HydrateClient>
       <ErrorBoundary fallback={<EditorError />}>
         <Suspense fallback={<EditorLoading />}>
-          {/* <ExecutionHeader executionId={executionId} /> */}
+          <ExecutionHeader executionId={executionId} />
           <main className="flex-1">
             <ExecutionPreview executionId={executionId} />
           </main>
