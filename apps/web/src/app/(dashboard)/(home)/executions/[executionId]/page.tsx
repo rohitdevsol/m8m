@@ -1,5 +1,15 @@
+import {
+  Editor,
+  EditorError,
+  EditorLoading,
+} from "@/features/editor/components/editor";
+import { ExecutionPreview } from "@/features/executions/components/execution";
+import { ExecutionHeader } from "@/features/executions/components/execution-header";
+import { prefetchExecution } from "@/features/executions/server/prefetch";
 import { requireAuth } from "@/lib/auth-utils";
-import React from "react";
+import { HydrateClient } from "@/trpc/server";
+import React, { Suspense } from "react";
+import { ErrorBoundary } from "react-error-boundary";
 
 interface PageProps {
   params: Promise<{
@@ -10,10 +20,18 @@ interface PageProps {
 const Page = async ({ params }: PageProps) => {
   await requireAuth();
   const { executionId } = await params;
+  prefetchExecution(executionId);
   return (
-    <div>
-      <p>Executions: {executionId}</p>
-    </div>
+    <HydrateClient>
+      <ErrorBoundary fallback={<EditorError />}>
+        <Suspense fallback={<EditorLoading />}>
+          {/* <ExecutionHeader executionId={executionId} /> */}
+          <main className="flex-1">
+            <ExecutionPreview executionId={executionId} />
+          </main>
+        </Suspense>
+      </ErrorBoundary>
+    </HydrateClient>
   );
 };
 

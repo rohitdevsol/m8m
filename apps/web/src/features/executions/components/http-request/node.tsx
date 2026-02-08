@@ -7,8 +7,13 @@ import { httpSchema } from "@repo/types";
 import { BaseExecutionNode } from "../base-execution-node";
 import { HttpRequestDialog, HttpRequestFormValues } from "./dialog";
 import z from "zod";
+import { NodeStatus } from "@/components/react-flow/node-status-indicator";
 
-type HttpRequestNodeType = Node<z.infer<typeof httpSchema>>;
+type HttpNodeData = z.infer<typeof httpSchema> & {
+  status?: NodeStatus;
+};
+
+type HttpRequestNodeType = Node<HttpNodeData>;
 
 export const HttpRequestNode = memo((props: NodeProps<HttpRequestNodeType>) => {
   const nodeData = props.data;
@@ -20,7 +25,7 @@ export const HttpRequestNode = memo((props: NodeProps<HttpRequestNodeType>) => {
     : "Not configured";
 
   const name = nodeData.name;
-  const nodeStatus = "initial";
+  const nodeStatus = nodeData.status || "initial";
 
   const handleOpenSettings = () => {
     setDialogOpen(true);

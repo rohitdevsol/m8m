@@ -8,10 +8,19 @@ export const executionsRouter = createTRPCRouter({
   getOne: protectedProcedure
     .input(z.object({ id: z.string() }))
     .query(async ({ ctx, input }) => {
-      return prisma.execution.findUniqueOrThrow({
+      return prisma.execution.findFirstOrThrow({
         where: {
           id: input.id,
           workflow: { userId: ctx.auth.user.id },
+        },
+        include: {
+          nodeRuns: true,
+          workflow: {
+            include: {
+              nodes: true,
+              connections: true,
+            },
+          },
         },
       });
     }),
