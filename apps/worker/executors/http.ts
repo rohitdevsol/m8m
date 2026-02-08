@@ -1,6 +1,6 @@
 import { httpSchema } from "@repo/types";
 import { resolveTemplate } from "../utils/template";
-import type { Node } from "@repo/database";
+import type { Node, Prisma } from "@repo/database";
 
 type HttpHandlerInput = {
   node: Partial<Node>;
@@ -41,5 +41,5 @@ export async function httpHandler({ node, inputs }: HttpHandlerInput) {
     throw new Error(`HTTP failed: ${res.status}`);
   }
 
-  return await res.json();
+  return (await res.json()) as Prisma.JsonValue;
 }

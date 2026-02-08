@@ -38,6 +38,7 @@ export async function runExecution(executionId: string) {
   });
 
   const context = await runDag(
+    execution.id,
     nodes,
     edges,
     execution.workflow.user,

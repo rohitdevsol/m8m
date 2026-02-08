@@ -7,7 +7,7 @@ export async function runNode(
   context: Record<string, any>,
   user: Partial<User>,
   credentials: Partial<Credential[]>,
-) {
+): Promise<any> {
   switch (node.type) {
     case "HTTP_REQUEST":
       return httpHandler({
@@ -17,8 +17,11 @@ export async function runNode(
       });
 
     case "MANUAL_TRIGGER":
+      if (!user.id) {
+        throw new Error("User missing in execution");
+      }
       return manualTriggerHandler({
-        userId: user.id!,
+        userId: user.id,
       });
 
     case "INITIAL":

@@ -1,8 +1,3 @@
-// utils/template.ts
-
-/**
- * Resolve {{ }} inside strings
- */
 function resolveStringTemplate(template: string, context: Record<string, any>) {
   const exactMatch = template.match(/^\s*\{\{(.*?)\}\}\s*$/);
   if (exactMatch) {

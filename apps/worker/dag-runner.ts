@@ -1,12 +1,20 @@
 // dag-runner.ts
 
-import type { Connection, Credential, Node, User } from "@repo/database";
+import {
+  prisma,
+  type Connection,
+  type Credential,
+  type Node,
+  type User,
+} from "@repo/database";
 import { runNode } from "./node-runner";
 import { createGraph } from "./utils/graph";
 import { buildContext } from "./utils/context";
 import { getNodeName } from "./utils/get-node-name";
+import { toJsonSafe } from "./utils/json";
 
 export async function runDag(
+  executionId: string,
   nodes: Node[],
   edges: Connection[],
   user: Partial<User>,
@@ -28,17 +36,61 @@ export async function runDag(
 
     if (!node) continue;
 
-    console.log("========: Running Node: ", node.id);
+    console.log("========: Running Node:", node.id);
     console.log(`[Node] name: ${node.name}`);
     console.log(`[Context]`, ctx.get());
-    const output = await runNode(node, ctx.get(), user, credentials);
 
     const name = getNodeName(node);
-    ctx.addStep(name, output);
+    const inputContext = ctx.get();
 
-    console.log(`[DAG] Node ${node.name} done`);
+    let nodeRunId: string | null = null;
 
-    processed++;
+    try {
+      const run = await prisma.nodeRun.create({
+        data: {
+          executionId,
+          nodeId: node.id,
+          nodeName: name,
+          status: "LOADING",
+          startedAt: new Date(),
+          input: toJsonSafe(inputContext),
+        },
+      });
+
+      nodeRunId = run.id;
+      const output = await runNode(node, inputContext, user, credentials);
+
+      await prisma.nodeRun.update({
+        where: { id: nodeRunId },
+        data: {
+          status: "SUCCESS",
+          output: toJsonSafe(output),
+          endedAt: new Date(),
+        },
+      });
+
+      ctx.addStep(name, output);
+
+      console.log(`[DAG] Node ${node.name} done`);
+
+      processed++;
+    } catch (err) {
+      console.error(`[Node Failed] ${node.name}`, err);
+
+      if (nodeRunId) {
+        await prisma.nodeRun.update({
+          where: { id: nodeRunId },
+          data: {
+            status: "ERROR",
+            error:
+              err instanceof Error ? err.stack || err.message : String(err),
+            endedAt: new Date(),
+          },
+        });
+      }
+
+      throw err;
+    }
 
     const children = childrenMap[nodeId] ?? [];
 
