@@ -58,6 +58,7 @@ export const HttpRequestDialog = ({
     },
   });
 
+  const watchVariableName = form.watch("name");
   const watchMethod = form.watch("method");
   const showBodyField = ["POST", "PUT", "PATCH"].includes(watchMethod);
 
@@ -99,14 +100,16 @@ export const HttpRequestDialog = ({
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Name</FormLabel>
+                  <FormLabel>Variable Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="getUsers or postUsers" {...field} />
+                    <Input placeholder="myApiCall" {...field} />
                   </FormControl>
                   <FormMessage />
                   <FormDescription>
-                    Provide a name for the HTTP request node. This name will be
-                    used to refer the data fields in the execution.
+                    {` Use this name to reference the result in other nodes`}
+                    <br />
+                    {watchVariableName &&
+                      `{{${watchVariableName}.<any_valid_field>}}`}
                   </FormDescription>
                 </FormItem>
               )}
