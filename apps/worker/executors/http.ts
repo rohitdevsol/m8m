@@ -1,4 +1,4 @@
-import { httpSchema, type HttpNodeConfig } from "@repo/types";
+import { httpSchema } from "@repo/types";
 import { resolveTemplate } from "../utils/template";
 import type { Node } from "@repo/database";
 
