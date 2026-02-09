@@ -10,15 +10,9 @@ type HttpHandlerInput = {
 
 export async function httpHandler({ node, inputs }: HttpHandlerInput) {
   const parsed = httpSchema.parse(node.data);
-
   const { endpoint, method, body } = parsed;
-  console.log("[httpEndpoint]", endpoint);
-  console.log("[httpMethod]", method);
-  console.log("[httpBody]", body);
-  console.log("[currentInputs]", inputs);
 
   const url = resolveTemplate(endpoint, inputs);
-
   let resolvedBody: any = undefined;
 
   if (body) {

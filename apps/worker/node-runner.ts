@@ -1,5 +1,6 @@
 import type { Credential, Node, User } from "@repo/database";
 import { httpHandler } from "./executors/http";
+import { geminiHandler } from "./executors/gemini";
 export async function runNode(
   node: Node,
   context: Record<string, any>,
@@ -14,6 +15,13 @@ export async function runNode(
 
     case "HTTP_REQUEST":
       return httpHandler({
+        node,
+        inputs: context,
+        credentials,
+      });
+
+    case "GEMINI":
+      return geminiHandler({
         node,
         inputs: context,
         credentials,
