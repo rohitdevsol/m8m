@@ -1,7 +1,5 @@
 import type { Credential, Node, User } from "@repo/database";
 import { httpHandler } from "./executors/http";
-import { manualTriggerHandler } from "./executors/manual";
-
 export async function runNode(
   node: Node,
   context: Record<string, any>,
@@ -11,6 +9,7 @@ export async function runNode(
   switch (node.type) {
     case "MANUAL_TRIGGER":
     case "GOOGLE_FORM_TRIGGER":
+    case "STRIPE_TRIGGER":
       return context.trigger;
 
     case "HTTP_REQUEST":

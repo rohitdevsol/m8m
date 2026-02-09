@@ -16,6 +16,7 @@ import { toJsonSafe } from "./utils/json";
 const TRIGGER_TYPES = new Set([
   "MANUAL_TRIGGER",
   "GOOGLE_FORM_TRIGGER",
+  "STRIPE_TRIGGER",
   "WEBHOOK_TRIGGER",
 ]);
 
