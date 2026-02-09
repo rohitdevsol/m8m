@@ -4,6 +4,9 @@ export const NodeType = {
   HTTP_REQUEST: "HTTP_REQUEST",
   GOOGLE_FORM_TRIGGER: "GOOGLE_FORM_TRIGGER",
   STRIPE_TRIGGER: "STRIPE_TRIGGER",
+  GEMINI: "GEMINI",
+  OPENAI: "OPENAI",
+  ANTHROPIC: "ANTHROPIC",
 } as const;
 
 export const CredentialType = {
