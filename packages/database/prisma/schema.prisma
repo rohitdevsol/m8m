@@ -153,6 +153,7 @@ model Execution {
   error     String? @db.Text
   errorStack String? @db.Text
   output    Json?
+  triggerData Json?
 
   startedAt DateTime @default(now())
   completedAt DateTime?
@@ -164,6 +165,7 @@ model Execution {
 
 model ExecutionQueue {
   executionId String @id @default(cuid())
+  createdAt   DateTime @default(now())
   execution Execution @relation(fields: [executionId],references: [id])
 }
 
@@ -201,6 +203,7 @@ enum NodeType {
   INITIAL
   MANUAL_TRIGGER
   HTTP_REQUEST
+  GOOGLE_FORM_TRIGGER
 }
 
 enum CredentialType {

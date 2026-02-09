@@ -1,0 +1,2 @@
+-- AlterEnum
+ALTER TYPE "NodeType" ADD VALUE 'GOOGLE_FORM_TRIGGER';
