@@ -9,19 +9,15 @@ export async function runNode(
   credentials: Partial<Credential[]>,
 ): Promise<any> {
   switch (node.type) {
+    case "MANUAL_TRIGGER":
+    case "GOOGLE_FORM_TRIGGER":
+      return context.trigger;
+
     case "HTTP_REQUEST":
       return httpHandler({
         node,
         inputs: context,
         credentials,
-      });
-
-    case "MANUAL_TRIGGER":
-      if (!user.id) {
-        throw new Error("User missing in execution");
-      }
-      return manualTriggerHandler({
-        userId: user.id,
       });
 
     case "INITIAL":

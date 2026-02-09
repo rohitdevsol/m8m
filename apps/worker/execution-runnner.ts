@@ -1,5 +1,3 @@
-// execution-runner.ts
-
 import { prisma } from "@repo/database";
 import { runDag } from "./dag-runner";
 
@@ -43,6 +41,7 @@ export async function runExecution(executionId: string) {
     edges,
     execution.workflow.user,
     execution.workflow.user.credentials,
+    execution.triggerData,
   );
 
   return context;

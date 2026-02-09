@@ -1,9 +1,8 @@
-// utils/context.ts
-
-export type ExecutionContext = Record<string, any> & {
-  last?: any;
-  flat?: Record<string, any>;
-  trigger?: any;
+export type ExecutionContext = {
+  last: any;
+  flat: Record<string, any>;
+  trigger: any;
+  [key: string]: any;
 };
 
 export function buildContext() {
@@ -13,26 +12,36 @@ export function buildContext() {
     trigger: null,
   };
 
+  function mergeToFlat(obj: any) {
+    if (!obj || typeof obj !== "object") return;
+
+    for (const [k, v] of Object.entries(obj)) {
+      if (!(k in context.flat!)) {
+        context.flat![k] = v;
+      }
+    }
+  }
+
   return {
     get() {
       return context;
     },
+
     addStep(name: string, output: any) {
       if (!name) return;
+
       context[name] = output;
       context.last = output;
 
-      if (output && typeof output === "object") {
-        for (const [k, v] of Object.entries(output)) {
-          if (!(k in context.flat!)) {
-            context.flat![k] = v;
-          }
-        }
-      }
+      mergeToFlat(output);
     },
 
-    setTrigger(data: any) {
+    setTrigger(data: any, name = "trigger") {
       context.trigger = data;
+      context[name] = data;
+      context.last = data;
+
+      mergeToFlat(data);
     },
   };
 }
