@@ -54,7 +54,6 @@ export const ExecutionPreview = ({ executionId }: { executionId: string }) => {
 
         data: {
           ...safeData,
-          name: dbNode.name,
           status: (run?.status ?? "PENDING").toLowerCase() as NodeStatus,
         },
       };
