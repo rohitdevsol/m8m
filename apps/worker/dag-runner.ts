@@ -71,7 +71,7 @@ export async function runDag(
         },
       });
 
-      await new Promise((resolve) => setTimeout(resolve, 3000));
+      await new Promise((resolve) => setTimeout(resolve, 2000));
       nodeRunId = run.id;
       const output = await runNode(node, inputContext, user);
 

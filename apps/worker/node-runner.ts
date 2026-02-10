@@ -1,7 +1,8 @@
-import type { Credential, Node, User } from "@repo/database";
+import type { Node, User } from "@repo/database";
 import { httpHandler } from "./executors/http";
 import { geminiHandler } from "./executors/gemini";
 import { openAIHandler } from "./executors/openai";
+import { discordHandler } from "./executors/discord";
 export async function runNode(
   node: Node,
   context: Record<string, any>,
@@ -28,6 +29,13 @@ export async function runNode(
 
     case "OPENAI":
       return openAIHandler({
+        node,
+        inputs: context,
+        userId: user.id!,
+      });
+
+    case "DISCORD":
+      return discordHandler({
         node,
         inputs: context,
         userId: user.id!,
