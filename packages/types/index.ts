@@ -80,6 +80,23 @@ export const discordSchema = z.object({
     .optional(),
 });
 
+export const slackSchema = z.object({
+  name: z
+    .string("Name is required")
+    .min(2, "Name must be at least 2 characters long")
+    .regex(
+      /^[A-Za-z_$][A-Za-z0-9_$]*$/,
+      "Name must start with a letter, underscore or dollar sign and can only contain letters, numbers, underscores or dollar signs",
+    ),
+  webhookUrl: z
+    .string("Webhook URL is required")
+    .min(1, "Minimum length should be one"),
+  content: z
+    .string("Content is required")
+    .min(1, "Minimum length should be one"),
+});
+
+export type SlackNodeConfig = z.infer<typeof slackSchema>;
 export type DiscordNodeConfig = z.infer<typeof discordSchema>;
 export type GeminiNodeConfig = z.infer<typeof geminiSchema>;
 export type OpenaiNodeConfig = z.infer<typeof openaiSchema>;

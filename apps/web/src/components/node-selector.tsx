@@ -71,6 +71,12 @@ const executionNodes: NodeTypeOption[] = [
     description: "Sends a message to a Discord channel",
     icon: "/discord.svg",
   },
+  // {
+  //   type: NodeType.SLACK,
+  //   label: "Slack",
+  //   description: "Sends a message to a Slack channel",
+  //   icon: "/slack.svg",
+  // },
 ];
 
 interface NodeSelectorProps {
