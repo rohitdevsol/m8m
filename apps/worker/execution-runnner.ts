@@ -1,8 +1,12 @@
+// execution-runner.ts
+
 import { prisma } from "@repo/database";
 import { runDag } from "./dag-runner";
+import { toJsonSafe } from "./utils/json";
+import { serializeError } from "./utils/error";
 
 export async function runExecution(executionId: string) {
-  const execution = await prisma.execution.findFirst({
+  const execution = await prisma.execution.findUnique({
     where: { id: executionId },
     include: {
       workflow: {
@@ -15,7 +19,9 @@ export async function runExecution(executionId: string) {
     },
   });
 
-  if (!execution) throw new Error("Execution not found");
+  if (!execution) {
+    throw new Error("Execution not found");
+  }
 
   if (execution.status === "FAILED") return;
 
@@ -33,13 +39,44 @@ export async function runExecution(executionId: string) {
     },
   });
 
-  const context = await runDag(
-    execution.id,
-    nodes,
-    edges,
-    execution.workflow.user,
-    execution.triggerData,
-  );
+  try {
+    const context = await runDag(
+      execution.id,
+      nodes,
+      edges,
+      execution.workflow.user,
+      execution.triggerData,
+    );
 
-  return context;
+    await prisma.execution.update({
+      where: { id: executionId },
+      data: {
+        status: "SUCCESS",
+        completedAt: new Date(),
+        output: toJsonSafe(context),
+      },
+    });
+
+    return context;
+  } catch (err) {
+    console.error("[Execution Failed]", err);
+
+    const serialized = serializeError(err);
+
+    await prisma.execution.update({
+      where: { id: executionId },
+      data: {
+        status: "FAILED",
+        error: serialized.message,
+        errorStack: serialized.stack
+          ? serialized.stack
+          : serialized.raw
+            ? JSON.stringify(serialized.raw, null, 2)
+            : null,
+        completedAt: new Date(),
+      },
+    });
+
+    throw err;
+  }
 }

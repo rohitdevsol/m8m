@@ -12,6 +12,7 @@ import { createGraph } from "./utils/graph";
 import { buildContext } from "./utils/context";
 import { getNodeName } from "./utils/get-node-name";
 import { toJsonSafe } from "./utils/json";
+import { serializeError } from "./utils/error";
 
 const TRIGGER_TYPES = new Set([
   "MANUAL_TRIGGER",
@@ -71,8 +72,9 @@ export async function runDag(
         },
       });
 
-      await new Promise((resolve) => setTimeout(resolve, 2000));
       nodeRunId = run.id;
+
+      await new Promise((resolve) => setTimeout(resolve, 2000));
       const output = await runNode(node, inputContext, user);
 
       await prisma.nodeRun.update({
@@ -93,12 +95,21 @@ export async function runDag(
       console.error(`[Node Failed] ${node.name}`, err);
 
       if (nodeRunId) {
+        const serialized = serializeError(err);
+
+        console.log("SERIALIZED ERROR:", serialized);
+
         await prisma.nodeRun.update({
           where: { id: nodeRunId },
           data: {
             status: "ERROR",
-            error:
-              err instanceof Error ? err.stack || err.message : String(err),
+            error: serialized.message,
+            errorStack: serialized.stack
+              ? serialized.stack
+              : serialized.raw
+                ? JSON.stringify(serialized.raw, null, 2)
+                : null,
+
             endedAt: new Date(),
           },
         });
