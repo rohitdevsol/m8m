@@ -11,6 +11,7 @@ import {
 
 import Link from "next/link";
 import { useSuspenseExecution } from "../hooks/use-executions";
+import { usePathname } from "next/navigation";
 
 export const ExecutionBreadCrumbs = ({
   executionId,

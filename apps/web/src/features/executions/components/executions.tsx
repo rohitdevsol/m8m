@@ -21,6 +21,8 @@ import {
 import { formatDistanceToNow } from "date-fns";
 import { Execution } from "@repo/database";
 import { ExecutionStatus } from "@/config/node-types";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export const ExecutionsList = () => {
   const executions = useSuspenseExecutions();
@@ -111,11 +113,20 @@ export const ExecutionItem = ({
     : null;
 
   const subtitle = (
-    <>
-      {data.workflow.name} &bull; Started{" "}
-      {formatDistanceToNow(data.startedAt, { addSuffix: true })}{" "}
-      {duration !== null && <>&bull; Took {duration} seconds</>}
-    </>
+    <div className="flex relative items-center  w-full min-w-5xl">
+      <div>
+        {data.workflow.name} &bull; Started{" "}
+        {formatDistanceToNow(data.startedAt, { addSuffix: true })}{" "}
+        {duration !== null && <>&bull; Took {duration} seconds</>}
+      </div>
+      <Link
+        prefetch
+        href={`/executions/${data.id}/logs`}
+        className="absolute right-0 bottom-0.75 ml-auto text-sm font-semibold hover:underline hover:text-primary"
+      >
+        Inspect Logs
+      </Link>
+    </div>
   );
 
   const getStatusIcon = (status: ExecutionStatus) => {
@@ -135,7 +146,10 @@ export const ExecutionItem = ({
   return (
     <EntityItem
       href={`/executions/${data.id}`}
-      title={data.status}
+      title={
+        data.status?.charAt(0)?.toUpperCase() +
+        data?.status?.slice(1)?.toLowerCase()
+      }
       subtitle={subtitle}
       image={
         <>
