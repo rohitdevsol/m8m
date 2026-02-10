@@ -59,6 +59,28 @@ export const openaiSchema = z.object({
   userPrompt: z.string().min(1, "User prompt is required"),
 });
 
+export const discordSchema = z.object({
+  name: z
+    .string("Name is required")
+    .min(2, "Name must be at least 2 characters long")
+    .regex(
+      /^[A-Za-z_$][A-Za-z0-9_$]*$/,
+      "Name must start with a letter, underscore or dollar sign and can only contain letters, numbers, underscores or dollar signs",
+    ),
+  webhookUrl: z
+    .string("Webhook URL is required")
+    .min(1, "Minimum length should be one"),
+  content: z
+    .string("Content is required")
+    .min(1, "Minimum length should be one")
+    .max(2000, "Discord messages can not exceed 2000 characters"),
+  username: z
+    .string("Username is required")
+    .min(1, "Minimum length should be one")
+    .optional(),
+});
+
+export type DiscordNodeConfig = z.infer<typeof discordSchema>;
 export type GeminiNodeConfig = z.infer<typeof geminiSchema>;
 export type OpenaiNodeConfig = z.infer<typeof openaiSchema>;
 
