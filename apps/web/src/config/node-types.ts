@@ -7,6 +7,8 @@ export const NodeType = {
   GEMINI: "GEMINI",
   OPENAI: "OPENAI",
   ANTHROPIC: "ANTHROPIC",
+  DISCORD: "DISCORD",
+  SLACK: "SLACK",
 } as const;
 
 export const CredentialType = {
@@ -26,5 +28,6 @@ export type ExecutionStatus =
   (typeof ExecutionStatus)[keyof typeof ExecutionStatus];
 
 export type NodeType = (typeof NodeType)[keyof typeof NodeType];
+
 export type CredentialType =
   (typeof CredentialType)[keyof typeof CredentialType];
