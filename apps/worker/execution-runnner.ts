@@ -9,9 +9,7 @@ export async function runExecution(executionId: string) {
         include: {
           nodes: true,
           connections: true,
-          user: {
-            include: { credentials: true },
-          },
+          user: true,
         },
       },
     },
@@ -40,7 +38,6 @@ export async function runExecution(executionId: string) {
     nodes,
     edges,
     execution.workflow.user,
-    execution.workflow.user.credentials,
     execution.triggerData,
   );
 

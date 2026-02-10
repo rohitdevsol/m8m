@@ -1,5 +1,5 @@
 import "dotenv/config";
-import type { Node } from "@repo/database";
+import { prisma, type Node } from "@repo/database";
 import { GoogleGenAI } from "@google/genai";
 import { geminiSchema } from "@repo/types";
 import { resolveTemplate } from "../utils/template";
@@ -7,16 +7,25 @@ import { resolveTemplate } from "../utils/template";
 type geminiHandlerInput = {
   node: Partial<Node>;
   inputs: Record<string, any>;
-  credentials: any[];
+  userId: string;
 };
 export const geminiHandler = async ({
   node,
   inputs,
-  credentials,
+  userId,
 }: geminiHandlerInput) => {
   const parsed = geminiSchema.parse(node.data);
-  const { model, userPrompt, systemPrompt } = parsed;
+  const { model, userPrompt, credentialId, systemPrompt } = parsed;
 
+  //finding out the credentials
+
+  const credential = await prisma.credential.findFirstOrThrow({
+    where: {
+      id: credentialId,
+      userId: userId,
+      type: "GEMINI",
+    },
+  });
   const resolvedPrompt = resolveTemplate(userPrompt, inputs) as string;
   const resolvedSystemPrompt = resolveTemplate(systemPrompt, inputs) as string;
 
@@ -24,7 +33,7 @@ export const geminiHandler = async ({
   console.log("[resolvedSystemPrompt]", resolvedSystemPrompt);
   const defaultSystemPrompt = `You are a helpful assistant. You answer as concisely as possible.`;
   const ai = new GoogleGenAI({
-    apiKey: process.env.GEMINI_API_KEY,
+    apiKey: credential.value,
   });
 
   const response = await ai.models.generateContent({

@@ -6,7 +6,6 @@ export async function runNode(
   node: Node,
   context: Record<string, any>,
   user: Partial<User>,
-  credentials: Partial<Credential[]>,
 ): Promise<any> {
   switch (node.type) {
     case "MANUAL_TRIGGER":
@@ -18,21 +17,20 @@ export async function runNode(
       return httpHandler({
         node,
         inputs: context,
-        credentials,
       });
 
     case "GEMINI":
       return geminiHandler({
         node,
         inputs: context,
-        credentials,
+        userId: user.id!,
       });
 
     case "OPENAI":
       return openAIHandler({
         node,
         inputs: context,
-        credentials,
+        userId: user.id!,
       });
 
     case "INITIAL":

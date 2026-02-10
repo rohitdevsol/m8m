@@ -25,7 +25,6 @@ export async function runDag(
   nodes: Node[],
   edges: Connection[],
   user: Partial<User>,
-  credentials: Partial<Credential[]>,
   triggerData?: any,
 ) {
   console.log("========: Started a new workflow execution :======");
@@ -74,7 +73,7 @@ export async function runDag(
 
       await new Promise((resolve) => setTimeout(resolve, 3000));
       nodeRunId = run.id;
-      const output = await runNode(node, inputContext, user, credentials);
+      const output = await runNode(node, inputContext, user);
 
       await prisma.nodeRun.update({
         where: { id: nodeRunId },

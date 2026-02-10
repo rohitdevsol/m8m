@@ -5,7 +5,6 @@ import type { Node, Prisma } from "@repo/database";
 type HttpHandlerInput = {
   node: Partial<Node>;
   inputs: Record<string, any>;
-  credentials: any[];
 };
 
 export async function httpHandler({ node, inputs }: HttpHandlerInput) {
