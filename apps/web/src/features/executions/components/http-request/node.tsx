@@ -8,9 +8,11 @@ import { BaseExecutionNode } from "../base-execution-node";
 import { HttpRequestDialog, HttpRequestFormValues } from "./dialog";
 import z from "zod";
 import { NodeStatus } from "@/components/react-flow/node-status-indicator";
+import { ExecutionNodeWrapper } from "@/components/react-flow/execution-node-wrapper";
 
 type HttpNodeData = z.infer<typeof httpSchema> & {
   status?: NodeStatus;
+  runError?: string | null;
 };
 
 type HttpRequestNodeType = Node<HttpNodeData>;
@@ -26,6 +28,7 @@ export const HttpRequestNode = memo((props: NodeProps<HttpRequestNodeType>) => {
 
   const name = nodeData.name;
   const nodeStatus = nodeData.status || "initial";
+  const error = nodeData.runError;
 
   const handleOpenSettings = () => {
     setDialogOpen(true);
@@ -55,20 +58,22 @@ export const HttpRequestNode = memo((props: NodeProps<HttpRequestNodeType>) => {
         onSubmit={handleSubmit}
         defaultValues={nodeData}
       />
-      <BaseExecutionNode
-        {...props}
-        id={props.id}
-        status={nodeStatus}
-        name={
-          name
-            ? "HTTP Request" + (nodeData.name ? ` - ${nodeData.name}` : "")
-            : "HTTP Request"
-        }
-        description={description}
-        icon={GlobeIcon}
-        onSettings={handleOpenSettings}
-        onDoubleClick={handleOpenSettings}
-      />
+      <ExecutionNodeWrapper status={nodeStatus} error={error}>
+        <BaseExecutionNode
+          {...props}
+          id={props.id}
+          status={nodeStatus}
+          name={
+            name
+              ? "HTTP Request" + (nodeData.name ? ` - ${nodeData.name}` : "")
+              : "HTTP Request"
+          }
+          description={description}
+          icon={GlobeIcon}
+          onSettings={handleOpenSettings}
+          onDoubleClick={handleOpenSettings}
+        />
+      </ExecutionNodeWrapper>
     </>
   );
 });
