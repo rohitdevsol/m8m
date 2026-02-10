@@ -35,6 +35,9 @@ export const useCreateCredential = () => {
         queryClient.invalidateQueries(
           trpc.credentials.getMany.queryOptions({}),
         );
+        queryClient.invalidateQueries(
+          trpc.credentials.getOne.queryOptions({ id: data.id }),
+        );
       },
       onError: (error) => {
         toast.error(`Failed to create credential: ${error.message}`);
