@@ -32,6 +32,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import Image from "next/image";
+import { useCredentialsByType } from "@/features/credentials/hooks/use-credentials";
+import { CredentialType } from "@/config/node-types";
 
 export type GeminiRequestFormValues = z.infer<typeof geminiSchema>;
 
@@ -48,10 +50,14 @@ export const GeminiDialog = ({
   onSubmit,
   defaultValues,
 }: Props) => {
+  const { data: credentials, isLoading: isLoadingCredentials } =
+    useCredentialsByType(CredentialType.GEMINI);
+
   const form = useForm<z.infer<typeof geminiSchema>>({
     resolver: zodResolver(geminiSchema),
     defaultValues: {
       name: defaultValues?.name,
+      credentialId: defaultValues?.credentialId,
       model: defaultValues?.model || AVAILABLE_GEMINI_MODELS[0],
       systemPrompt: defaultValues?.systemPrompt || "",
       userPrompt: defaultValues?.userPrompt || "",
@@ -69,6 +75,7 @@ export const GeminiDialog = ({
     if (open) {
       form.reset({
         name: defaultValues?.name,
+        credentialId: defaultValues?.credentialId,
         model: defaultValues?.model || AVAILABLE_GEMINI_MODELS[0],
         systemPrompt: defaultValues?.systemPrompt || "",
         userPrompt: defaultValues?.userPrompt || "",
@@ -109,6 +116,43 @@ export const GeminiDialog = ({
                     {watchVariableName &&
                       `{{${watchVariableName}.<any_valid_field>}}`}
                   </FormDescription>
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              name="credentialId"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Gemini Credential</FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                    disabled={isLoadingCredentials || !credentials?.length}
+                  >
+                    <FormControl>
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Select a credential" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {credentials?.map((cred) => (
+                        <SelectItem key={cred.id} value={cred.id}>
+                          <div className="flex items-center gap-2">
+                            <Image
+                              src={"/gemini-color.svg"}
+                              alt={"gemini"}
+                              width={16}
+                              height={16}
+                            />
+                            {cred.name}
+                          </div>
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
                 </FormItem>
               )}
             />

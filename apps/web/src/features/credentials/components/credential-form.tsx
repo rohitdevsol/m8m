@@ -155,7 +155,7 @@ export const CredentialForm = ({ initialData }: CredentialFormProps) => {
                   >
                     <FormControl>
                       <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Select a method" />
+                        <SelectValue placeholder="Select a type" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>

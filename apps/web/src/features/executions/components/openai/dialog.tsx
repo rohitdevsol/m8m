@@ -32,6 +32,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import Image from "next/image";
+import { CredentialType } from "@/config/node-types";
+import { useCredentialsByType } from "@/features/credentials/hooks/use-credentials";
 
 export type OpenAIFormRequestValues = z.infer<typeof openaiSchema>;
 
@@ -48,10 +50,14 @@ export const OpenAIDialog = ({
   onSubmit,
   defaultValues,
 }: Props) => {
+  const { data: credentials, isLoading: isLoadingCredentials } =
+    useCredentialsByType(CredentialType.OPENAI);
+
   const form = useForm<z.infer<typeof openaiSchema>>({
     resolver: zodResolver(openaiSchema),
     defaultValues: {
       name: defaultValues?.name,
+      credentialId: defaultValues?.credentialId,
       model: defaultValues?.model || AVAILABLE_OPENAI_MODELS[0],
       systemPrompt: defaultValues?.systemPrompt || "",
       userPrompt: defaultValues?.userPrompt || "",
@@ -69,6 +75,7 @@ export const OpenAIDialog = ({
     if (open) {
       form.reset({
         name: defaultValues?.name,
+        credentialId: defaultValues?.credentialId,
         model: defaultValues?.model || AVAILABLE_OPENAI_MODELS[0],
         systemPrompt: defaultValues?.systemPrompt || "",
         userPrompt: defaultValues?.userPrompt || "",
@@ -109,6 +116,42 @@ export const OpenAIDialog = ({
                     {watchVariableName &&
                       `{{${watchVariableName}.<any_valid_field>}}`}
                   </FormDescription>
+                </FormItem>
+              )}
+            />
+            <FormField
+              name="credentialId"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>OpenAI Credential</FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                    disabled={isLoadingCredentials || !credentials?.length}
+                  >
+                    <FormControl>
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Select a credential" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {credentials?.map((cred) => (
+                        <SelectItem key={cred.id} value={cred.id}>
+                          <div className="flex items-center gap-2">
+                            <Image
+                              src={"/openai.svg"}
+                              alt={"openai"}
+                              width={16}
+                              height={16}
+                            />
+                            {cred.name}
+                          </div>
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
                 </FormItem>
               )}
             />
