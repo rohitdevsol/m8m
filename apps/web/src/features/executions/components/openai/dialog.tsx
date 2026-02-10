@@ -21,7 +21,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { AVAILABLE_GEMINI_MODELS, geminiSchema } from "@repo/types";
+import { AVAILABLE_OPENAI_MODELS, openaiSchema } from "@repo/types";
 import { useEffect } from "react";
 import z from "zod";
 import {
@@ -33,26 +33,26 @@ import {
 } from "@/components/ui/select";
 import Image from "next/image";
 
-export type GeminiRequestFormValues = z.infer<typeof geminiSchema>;
+export type OpenAIFormRequestValues = z.infer<typeof openaiSchema>;
 
 interface Props {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onSubmit: (values: z.infer<typeof geminiSchema>) => void;
-  defaultValues?: Partial<GeminiRequestFormValues>;
+  onSubmit: (values: z.infer<typeof openaiSchema>) => void;
+  defaultValues?: Partial<OpenAIFormRequestValues>;
 }
 
-export const GeminiDialog = ({
+export const OpenAIDialog = ({
   open,
   onOpenChange,
   onSubmit,
   defaultValues,
 }: Props) => {
-  const form = useForm<z.infer<typeof geminiSchema>>({
-    resolver: zodResolver(geminiSchema),
+  const form = useForm<z.infer<typeof openaiSchema>>({
+    resolver: zodResolver(openaiSchema),
     defaultValues: {
       name: defaultValues?.name,
-      model: defaultValues?.model || AVAILABLE_GEMINI_MODELS[0],
+      model: defaultValues?.model || AVAILABLE_OPENAI_MODELS[0],
       systemPrompt: defaultValues?.systemPrompt || "",
       userPrompt: defaultValues?.userPrompt || "",
     },
@@ -60,7 +60,7 @@ export const GeminiDialog = ({
 
   const watchVariableName = form.watch("name");
 
-  const handleSubmit = (values: z.infer<typeof geminiSchema>) => {
+  const handleSubmit = (values: z.infer<typeof openaiSchema>) => {
     onSubmit(values);
     onOpenChange(false);
   };
@@ -69,7 +69,7 @@ export const GeminiDialog = ({
     if (open) {
       form.reset({
         name: defaultValues?.name,
-        model: defaultValues?.model || AVAILABLE_GEMINI_MODELS[0],
+        model: defaultValues?.model || AVAILABLE_OPENAI_MODELS[0],
         systemPrompt: defaultValues?.systemPrompt || "",
         userPrompt: defaultValues?.userPrompt || "",
       });
@@ -83,7 +83,7 @@ export const GeminiDialog = ({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Gemini Configuration</DialogTitle>
+          <DialogTitle>OpenAI Configuration</DialogTitle>
           <DialogDescription>
             Configure the AI model and prompts for this node.
           </DialogDescription>
@@ -128,11 +128,11 @@ export const GeminiDialog = ({
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent accessKey="">
-                      {AVAILABLE_GEMINI_MODELS.map((model) => (
+                      {AVAILABLE_OPENAI_MODELS.map((model) => (
                         <SelectItem key={model} value={model}>
                           <Image
-                            src={"/gemini-color.svg"}
-                            alt="gemini-logo"
+                            src={"/openai.svg"}
+                            alt="openai-logo"
                             height={15}
                             width={15}
                           />
@@ -143,7 +143,7 @@ export const GeminiDialog = ({
                   </Select>
                   <FormMessage />
                   <FormDescription>
-                    The Gemini Model to use for the request.
+                    The OpenAI Model to use for the request.
                   </FormDescription>
                 </FormItem>
               )}
