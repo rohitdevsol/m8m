@@ -7,9 +7,11 @@ import { BaseExecutionNode } from "../base-execution-node";
 import { OpenAIDialog, OpenAIFormRequestValues } from "./dialog";
 import z from "zod";
 import { NodeStatus } from "@/components/react-flow/node-status-indicator";
+import { ExecutionNodeWrapper } from "@/components/react-flow/execution-node-wrapper";
 
 type OpenAINodeData = z.infer<typeof openaiSchema> & {
   status?: NodeStatus;
+  runError?: string | null;
 };
 
 type OpenAINodeType = Node<OpenAINodeData>;
@@ -25,6 +27,7 @@ export const OpenAINode = memo((props: NodeProps<OpenAINodeType>) => {
 
   const name = nodeData.name;
   const nodeStatus = nodeData.status || "initial";
+  const error = nodeData.runError;
 
   const handleOpenSettings = () => {
     setDialogOpen(true);
@@ -54,20 +57,22 @@ export const OpenAINode = memo((props: NodeProps<OpenAINodeType>) => {
         onSubmit={handleSubmit}
         defaultValues={nodeData}
       />
-      <BaseExecutionNode
-        {...props}
-        id={props.id}
-        status={nodeStatus}
-        name={
-          name
-            ? "OpenAI" + (nodeData.name ? ` - ${nodeData.name}` : "")
-            : "OpenAI"
-        }
-        description={description}
-        icon={"/openai.svg"}
-        onSettings={handleOpenSettings}
-        onDoubleClick={handleOpenSettings}
-      />
+      <ExecutionNodeWrapper status={nodeStatus} error={error}>
+        <BaseExecutionNode
+          {...props}
+          id={props.id}
+          status={nodeStatus}
+          name={
+            name
+              ? "OpenAI" + (nodeData.name ? ` - ${nodeData.name}` : "")
+              : "OpenAI"
+          }
+          description={description}
+          icon={"/openai.svg"}
+          onSettings={handleOpenSettings}
+          onDoubleClick={handleOpenSettings}
+        />
+      </ExecutionNodeWrapper>
     </>
   );
 });
