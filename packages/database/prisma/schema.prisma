@@ -208,6 +208,8 @@ enum NodeType {
   GEMINI
   ANTHROPIC
   OPENAI
+  DISCORD
+  SLACK
 }
 
 enum CredentialType {
