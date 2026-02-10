@@ -1,6 +1,7 @@
 import type { Credential, Node, User } from "@repo/database";
 import { httpHandler } from "./executors/http";
 import { geminiHandler } from "./executors/gemini";
+import { openAIHandler } from "./executors/openai";
 export async function runNode(
   node: Node,
   context: Record<string, any>,
@@ -22,6 +23,13 @@ export async function runNode(
 
     case "GEMINI":
       return geminiHandler({
+        node,
+        inputs: context,
+        credentials,
+      });
+
+    case "OPENAI":
+      return openAIHandler({
         node,
         inputs: context,
         credentials,

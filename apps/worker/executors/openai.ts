@@ -1,6 +1,6 @@
 import "dotenv/config";
 import type { Node } from "@repo/database";
-import { geminiSchema } from "@repo/types";
+import { openaiSchema } from "@repo/types";
 import { resolveTemplate } from "../utils/template";
 import OpenAI from "openai";
 
@@ -24,7 +24,7 @@ export const openAIHandler = async ({
   inputs,
   credentials,
 }: openAIHandlerProps) => {
-  const parsed = geminiSchema.parse(node.data);
+  const parsed = openaiSchema.parse(node.data);
   const { model, userPrompt, systemPrompt } = parsed;
 
   const resolvedPrompt = resolveTemplate(userPrompt, inputs) as string;
