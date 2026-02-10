@@ -180,7 +180,8 @@ model NodeRun {
 
   input       Json?
   output      Json?
-  error       String?
+  error       String? @db.Text
+  errorStack  String?   @db.Text 
 
   startedAt   DateTime?
   endedAt     DateTime?

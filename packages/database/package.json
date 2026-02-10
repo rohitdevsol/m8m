@@ -6,7 +6,7 @@
   },
   "scripts": {
     "db:migrate:deploy": "prisma migrate deploy",
-    "db:migrate:dev": "prisma migrate dev --name stripe_trigger",
+    "db:migrate:dev": "prisma migrate dev --name noderun_changes",
     "db:push": "prisma db push",
     "db:migrate:reset": "prisma migrate reset --force",
     "db:seed": "tsx src/seed.ts",
