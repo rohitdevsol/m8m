@@ -7,9 +7,11 @@ import { DiscordDialog, DiscordFormValues } from "./dialog";
 import z from "zod";
 import { NodeStatus } from "@/components/react-flow/node-status-indicator";
 import { BaseExecutionNode } from "@/features/executions/components/base-execution-node";
+import { ExecutionNodeWrapper } from "@/components/react-flow/execution-node-wrapper";
 
 type DiscordNodeData = z.infer<typeof discordSchema> & {
   status?: NodeStatus;
+  runError?: string | null;
 };
 
 type DiscordNodeType = Node<DiscordNodeData>;
@@ -25,6 +27,7 @@ export const DiscordNode = memo((props: NodeProps<DiscordNodeType>) => {
 
   const name = nodeData.name;
   const nodeStatus = nodeData.status || "initial";
+  const error = nodeData.runError;
 
   const handleOpenSettings = () => {
     setDialogOpen(true);
@@ -54,20 +57,22 @@ export const DiscordNode = memo((props: NodeProps<DiscordNodeType>) => {
         onSubmit={handleSubmit}
         defaultValues={nodeData}
       />
-      <BaseExecutionNode
-        {...props}
-        id={props.id}
-        status={nodeStatus}
-        name={
-          name
-            ? "Discord" + (nodeData.name ? ` - ${nodeData.name}` : "")
-            : "Discord"
-        }
-        description={description}
-        icon={"/discord.svg"}
-        onSettings={handleOpenSettings}
-        onDoubleClick={handleOpenSettings}
-      />
+      <ExecutionNodeWrapper status={nodeStatus} error={error}>
+        <BaseExecutionNode
+          {...props}
+          id={props.id}
+          status={nodeStatus}
+          name={
+            name
+              ? "Discord" + (nodeData.name ? ` - ${nodeData.name}` : "")
+              : "Discord"
+          }
+          description={description}
+          icon={"/discord.svg"}
+          onSettings={handleOpenSettings}
+          onDoubleClick={handleOpenSettings}
+        />
+      </ExecutionNodeWrapper>
     </>
   );
 });
