@@ -557,7 +557,6 @@ Built with amazing open-source technologies:
 - Prisma
 - Kafka
 - Jotai
-- Zustand
 - TailwindCSS
 - And many more!
 
