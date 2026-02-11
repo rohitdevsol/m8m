@@ -211,6 +211,7 @@ enum NodeType {
   OPENAI
   DISCORD
   SLACK
+  TELEGRAM
 }
 
 enum CredentialType {
