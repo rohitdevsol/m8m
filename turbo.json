@@ -1,9 +1,6 @@
 {
   "$schema": "https://turborepo.dev/schema.json",
-  "globalEnv": [
-    "DATABASE_URL",
-    "NODE_ENV"
-  ],
+  "globalEnv": [],
   "tasks": {
     "build": {
       "dependsOn": [
@@ -18,10 +15,35 @@
         ".next/**",
         "!.next/cache/**"
       ],
+    },
+    "web:dev": {
+      "cache": false,
       "env": [
         "DATABASE_URL",
         "NODE_ENV",
-        "NEXT_PUBLIC_*"
+        "NEXT_PUBLIC_*",
+        "BETTER_AUTH_BASE_URL",
+        "BETTER_AUTH_SECRET"
+      ]
+    },
+    "web:start": {
+      "cache": false,
+      "env": [
+        "DATABASE_URL",
+        "NODE_ENV",
+        "NEXT_PUBLIC_*",
+        "BETTER_AUTH_BASE_URL",
+        "BETTER_AUTH_SECRET"
+      ]
+    },
+    "web:build": {
+      "cache": false,
+      "env": [
+        "DATABASE_URL",
+        "NODE_ENV",
+        "NEXT_PUBLIC_*",
+        "BETTER_AUTH_BASE_URL",
+        "BETTER_AUTH_SECRET"
       ]
     },
     "db:migrate:dev": {
