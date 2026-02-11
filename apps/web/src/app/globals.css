@@ -205,3 +205,11 @@ body {
 .react-flow__node.selected #base-node {
   @apply ring-3 ring-muted-foreground/25 shadow-lg;
 }
+
+[data-slot="scroll-area-scrollbar"] {
+  display: none !important;
+}
+
+[data-slot="scroll-area-thumb"] {
+  display: none !important;
+}
