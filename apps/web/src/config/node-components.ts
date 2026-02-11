@@ -5,6 +5,7 @@ import { HttpRequestNode } from "@/features/nodes/actions/http-request/node";
 import { OpenAINode } from "@/features/nodes/actions/openai/node";
 import { DiscordNode } from "@/features/nodes/messaging/components/discord/node";
 import { SlackNode } from "@/features/nodes/messaging/components/slack/node";
+import { TelegramNode } from "@/features/nodes/messaging/components/telegram/node";
 import { GoogleFormTriggerNode } from "@/features/nodes/triggers/components/google-form-trigger/node";
 import { ManualTriggerNode } from "@/features/nodes/triggers/components/manual-trigger/node";
 import { StripeTriggerNode } from "@/features/nodes/triggers/components/stripe-trigger/node";
@@ -29,6 +30,7 @@ export const nodeComponents: NodeTypes = {
   [NodeType.OPENAI]: OpenAINode,
   [NodeType.DISCORD]: DiscordNode,
   [NodeType.SLACK]: SlackNode,
+  [NodeType.TELEGRAM]: TelegramNode,
 } as const satisfies NodeTypes;
 
 export type RegisteredNodeType = keyof typeof nodeComponents;

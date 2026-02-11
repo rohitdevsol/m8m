@@ -9,6 +9,7 @@ export const NodeType = {
   ANTHROPIC: "ANTHROPIC",
   DISCORD: "DISCORD",
   SLACK: "SLACK",
+  TELEGRAM: "TELEGRAM",
 } as const;
 
 export const CredentialType = {

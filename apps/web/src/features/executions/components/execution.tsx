@@ -98,7 +98,7 @@ export const ExecutionPreview = ({ executionId }: { executionId: string }) => {
   }));
 
   return (
-    <div className="w-full h-screen">
+    <div className="size-full">
       <ReactFlow
         nodes={nodes}
         edges={edges}

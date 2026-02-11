@@ -1,5 +1,6 @@
 import { createTRPCRouter, protectedProcedure } from "@/trpc/init";
 import { CredentialType, prisma } from "@repo/database";
+import { encrypt } from "@repo/common";
 import z from "zod";
 import { PAGINATION } from "@/config/constants";
 
@@ -16,7 +17,7 @@ export const credentialsRouter = createTRPCRouter({
       return prisma.credential.create({
         data: {
           name: input.name,
-          value: input.value, //encrypt in production
+          value: encrypt(input.value),
           type: input.type,
           userId: ctx.auth.user.id,
         },
@@ -62,7 +63,7 @@ export const credentialsRouter = createTRPCRouter({
         },
         data: {
           name,
-          value,
+          value: encrypt(value),
           type,
         },
       });

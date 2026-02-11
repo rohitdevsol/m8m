@@ -3,9 +3,9 @@
   "name": "web",
   "version": "1.0.0",
   "scripts": {
-    "web:dev": "next dev",
-    "web:build": "next build",
-    "web:start": "next start",
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
     "lint": "eslint . --max-warnings 0"
   },
   "dependencies": {
@@ -79,6 +79,7 @@
     "@repo/types": "*",
     "@repo/eslint-config": "*",
     "@repo/typescript-config": "*",
+    "@repo/common": "*",
     "@types/node": "^20.11.24",
     "@types/react": "^18.2.61",
     "@types/react-dom": "^18.2.19",
