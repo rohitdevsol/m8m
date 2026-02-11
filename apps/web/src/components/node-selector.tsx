@@ -72,6 +72,12 @@ const executionNodes: NodeTypeOption[] = [
     description: "Sends a message to a Discord channel",
     icon: "/discord.svg",
   },
+  {
+    type: NodeType.TELEGRAM,
+    label: "Telegram",
+    description: "Sends a message to a Telegram channel",
+    icon: "/telegram.svg",
+  },
   // {
   //   type: NodeType.SLACK,
   //   label: "Slack",
