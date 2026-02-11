@@ -8,7 +8,6 @@ import {
   BreadcrumbItem,
   BreadcrumbLink,
   BreadcrumbList,
-  BreadcrumbEllipsis,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 
@@ -82,6 +81,7 @@ export const EditorNameInput = ({ workflowId }: { workflowId: string }) => {
     try {
       await updateWorkflow.mutate({ id: workflow.id, name });
     } catch (error) {
+      console.log(error);
       setName(workflow.name); //reset the name
     } finally {
       setIsEditing(false);

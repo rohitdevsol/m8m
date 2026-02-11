@@ -1,6 +1,5 @@
-import { generateSlug } from "random-word-slugs";
 import { createTRPCRouter, protectedProcedure } from "@/trpc/init";
-import { NodeType, prisma } from "@repo/database";
+import { prisma } from "@repo/database";
 import z from "zod";
 import { PAGINATION } from "@/config/constants";
 

@@ -8,7 +8,6 @@ import {
   applyEdgeChanges,
   applyNodeChanges,
   Background,
-  Controls,
   addEdge,
   type Node,
   type Edge,

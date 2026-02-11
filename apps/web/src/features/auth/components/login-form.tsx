@@ -8,29 +8,23 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import z from "zod";
-
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
-  FormLabel,
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { authClient } from "@/lib/auth-client";
 import { RequiredLabel } from "@/components/ui/required-label";
-import { ModeToggle } from "@/components/mode-toggle";
 
 const loginSchema = z.object({
   email: z.email("Please enter a valid email"),

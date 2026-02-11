@@ -1,13 +1,6 @@
 "use client";
 import React from "react";
-import {
-  CreditCardIcon,
-  FolderOpenIcon,
-  HistoryIcon,
-  KeyIcon,
-  LogOutIcon,
-  StarIcon,
-} from "lucide-react";
+import { FolderOpenIcon, HistoryIcon, KeyIcon, LogOutIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -17,13 +10,11 @@ import {
   SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
-  SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { title } from "process";
 import { authClient } from "@/lib/auth-client";
 
 const menuItems = [

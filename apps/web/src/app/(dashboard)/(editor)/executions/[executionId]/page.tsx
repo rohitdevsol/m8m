@@ -1,5 +1,4 @@
 import {
-  Editor,
   EditorError,
   EditorLoading,
 } from "@/features/editor/components/editor";

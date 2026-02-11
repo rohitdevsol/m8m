@@ -121,9 +121,6 @@ export const WorkflowsEmpty = () => {
 
   const handleCreate = () => {
     createWorkflow.mutate(undefined, {
-      onSuccess: (data) => {
-        // router.push(`/workflows/${data.id}`);
-      },
       onError: (error) => {
         // Open modal (skipping cause I am not adding payments as of now)
         console.error(error);

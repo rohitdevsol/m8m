@@ -1,6 +1,6 @@
 import { CustomButton } from "@/components/custom-button";
 import { requireAuth } from "@/lib/auth-utils";
-import { caller } from "@/trpc/server";
+// import { caller } from "@/trpc/server";
 
 export default async function IndexPage() {
   await requireAuth();

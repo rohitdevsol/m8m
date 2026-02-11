@@ -1,18 +1,15 @@
 "use client";
 
 import type { NodeProps } from "@xyflow/react";
-import { MousePointerIcon } from "lucide-react";
 import { memo, useState } from "react";
-
-import { BaseTriggerNode } from "../base-trigger-node";
-import { ManualTriggerDialog } from "./dialog";
+import { BaseTriggerNode } from "@/features/nodes/basenodes/base-trigger-node";
+import { StripeTriggerDialog } from "./dialog";
 import { NodeStatus } from "@/components/react-flow/node-status-indicator";
 
 type Props = NodeProps & {
   status?: NodeStatus;
 };
-
-export const ManualTriggerNode = memo((props: Props) => {
+export const StripeTriggerNode = memo((props: Props) => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const nodeStatus = (props.data.status as NodeStatus) || "initial";
 
@@ -22,11 +19,12 @@ export const ManualTriggerNode = memo((props: Props) => {
 
   return (
     <>
-      <ManualTriggerDialog open={dialogOpen} onOpenChange={setDialogOpen} />
+      <StripeTriggerDialog open={dialogOpen} onOpenChange={setDialogOpen} />
       <BaseTriggerNode
         {...props}
-        icon={MousePointerIcon}
-        name="When clicking 'Execute Workflow'"
+        icon={"/stripe.svg"}
+        name="Stripe"
+        description="When stripe event is captured"
         status={nodeStatus}
         onSettings={handleOpenSettings}
         onDoubleClick={handleOpenSettings}
@@ -35,4 +33,4 @@ export const ManualTriggerNode = memo((props: Props) => {
   );
 });
 
-ManualTriggerNode.displayName = "ManualTriggerNode";
+StripeTriggerNode.displayName = "StripeTriggerNode";

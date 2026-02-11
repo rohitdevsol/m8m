@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/sheet";
 import { NodeType } from "@/config/node-types";
 import { Separator } from "@/components/ui/separator";
+import Image from "next/image";
 
 export type NodeTypeOption = {
   type: NodeType;
@@ -112,8 +113,8 @@ export function NodeSelector({
           (node) => node.type === NodeType.INITIAL,
         );
 
-        const centerX = window.innerWidth / 2;
-        const centerY = window.innerHeight / 2;
+        const centerX = window?.innerWidth / 2;
+        const centerY = window?.innerHeight / 2;
         // need to place node wherever I am on screen right now
         const flowPosition = screenToFlowPosition({
           x: centerX + (Math.random() - 0.5) * 200,
@@ -161,10 +162,12 @@ export function NodeSelector({
               >
                 <div className="flex items-center gap-6 w-full overflow-hidden">
                   {typeof Icon === "string" ? (
-                    <img
+                    <Image
                       src={Icon}
                       alt={nodeType.label}
-                      className="size-5 object-contain rounded-sm"
+                      height={"20"}
+                      width={"20"}
+                      className=" object-contain rounded-sm"
                     />
                   ) : (
                     <Icon className="size-5" />
@@ -201,10 +204,12 @@ export function NodeSelector({
               >
                 <div className="flex items-center gap-6 w-full overflow-hidden">
                   {typeof Icon === "string" ? (
-                    <img
+                    <Image
                       src={Icon}
                       alt={nodeType.label}
-                      className="size-5 object-contain rounded-sm"
+                      height={"20"}
+                      width={"20"}
+                      className=" object-contain rounded-sm"
                     />
                   ) : (
                     <Icon className="size-5" />

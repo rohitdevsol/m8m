@@ -2,10 +2,9 @@
 
 import type { NodeProps } from "@xyflow/react";
 import { memo, useState } from "react";
-
-import { BaseTriggerNode } from "../base-trigger-node";
 import { GoogleFormTriggerDialog } from "./dialog";
 import { NodeStatus } from "@/components/react-flow/node-status-indicator";
+import { BaseTriggerNode } from "@/features/nodes/basenodes/base-trigger-node";
 
 type Props = NodeProps & {
   status?: NodeStatus;

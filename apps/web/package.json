@@ -3,9 +3,9 @@
   "name": "web",
   "version": "1.0.0",
   "scripts": {
-    "dev": "dotenv -e ../../.env -- next dev",
-    "build": "dotenv -e ../../.env -- next build",
-    "start": "next start",
+    "web:dev": "next dev",
+    "web:build": "next build",
+    "web:start": "next start",
     "lint": "eslint . --max-warnings 0"
   },
   "dependencies": {

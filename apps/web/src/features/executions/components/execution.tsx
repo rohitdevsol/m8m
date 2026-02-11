@@ -12,7 +12,6 @@ import {
 } from "../hooks/use-executions";
 import { NodeStatus } from "@/components/react-flow/node-status-indicator";
 import { ExecutionStatus, NodeType } from "@/config/node-types";
-import { useParams } from "next/navigation";
 import {
   Card,
   CardContent,

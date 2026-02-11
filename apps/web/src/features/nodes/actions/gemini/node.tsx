@@ -2,27 +2,27 @@
 
 import { useReactFlow, type Node, type NodeProps } from "@xyflow/react";
 import { memo, useState } from "react";
-import { AVAILABLE_OPENAI_MODELS, openaiSchema } from "@repo/types";
-import { BaseExecutionNode } from "../base-execution-node";
-import { OpenAIDialog, OpenAIFormRequestValues } from "./dialog";
+import { AVAILABLE_GEMINI_MODELS, geminiSchema } from "@repo/types";
+import { GeminiDialog, GeminiRequestFormValues } from "./dialog";
 import z from "zod";
 import { NodeStatus } from "@/components/react-flow/node-status-indicator";
 import { ExecutionNodeWrapper } from "@/components/react-flow/execution-node-wrapper";
+import { BaseExecutionNode } from "@/features/nodes/basenodes/base-execution-node";
 
-type OpenAINodeData = z.infer<typeof openaiSchema> & {
+type GeminiNodeData = z.infer<typeof geminiSchema> & {
   status?: NodeStatus;
   runError?: string | null;
 };
 
-type OpenAINodeType = Node<OpenAINodeData>;
+type GeminiNodeType = Node<GeminiNodeData>;
 
-export const OpenAINode = memo((props: NodeProps<OpenAINodeType>) => {
+export const GeminiNode = memo((props: NodeProps<GeminiNodeType>) => {
   const nodeData = props.data;
   const [dialogOpen, setDialogOpen] = useState(false);
-  const { setNodes, setEdges } = useReactFlow();
+  const { setNodes } = useReactFlow();
 
   const description = nodeData?.userPrompt
-    ? `${nodeData.model || AVAILABLE_OPENAI_MODELS[0]}: \n${nodeData.userPrompt.slice(0, 50) + "..."}`
+    ? `${nodeData.model || AVAILABLE_GEMINI_MODELS[0]}: \n${nodeData.userPrompt.slice(0, 50) + "..."}`
     : "Not configured";
 
   const name = nodeData.name;
@@ -33,7 +33,7 @@ export const OpenAINode = memo((props: NodeProps<OpenAINodeType>) => {
     setDialogOpen(true);
   };
 
-  const handleSubmit = (values: OpenAIFormRequestValues) => {
+  const handleSubmit = (values: GeminiRequestFormValues) => {
     setNodes((nodes) =>
       nodes.map((node) => {
         if (node.id === props.id) {
@@ -51,7 +51,7 @@ export const OpenAINode = memo((props: NodeProps<OpenAINodeType>) => {
   };
   return (
     <>
-      <OpenAIDialog
+      <GeminiDialog
         open={dialogOpen}
         onOpenChange={setDialogOpen}
         onSubmit={handleSubmit}
@@ -64,11 +64,11 @@ export const OpenAINode = memo((props: NodeProps<OpenAINodeType>) => {
           status={nodeStatus}
           name={
             name
-              ? "OpenAI" + (nodeData.name ? ` - ${nodeData.name}` : "")
-              : "OpenAI"
+              ? "Gemini" + (nodeData.name ? ` - ${nodeData.name}` : "")
+              : "Gemini"
           }
           description={description}
-          icon={"/openai.svg"}
+          icon={"/gemini-color.svg"}
           onSettings={handleOpenSettings}
           onDoubleClick={handleOpenSettings}
         />
@@ -77,4 +77,4 @@ export const OpenAINode = memo((props: NodeProps<OpenAINodeType>) => {
   );
 });
 
-OpenAINode.displayName = "OpenAINode";
+GeminiNode.displayName = "GeminiNode";

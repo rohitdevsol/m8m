@@ -2,11 +2,11 @@
 
 import { useReactFlow, type Node, type NodeProps } from "@xyflow/react";
 import { memo, useState } from "react";
-import { AVAILABLE_GEMINI_MODELS, discordSchema } from "@repo/types";
+import { discordSchema } from "@repo/types";
 import { DiscordDialog, DiscordFormValues } from "./dialog";
 import z from "zod";
 import { NodeStatus } from "@/components/react-flow/node-status-indicator";
-import { BaseExecutionNode } from "@/features/executions/components/base-execution-node";
+import { BaseExecutionNode } from "@/features/nodes/basenodes/base-execution-node";
 import { ExecutionNodeWrapper } from "@/components/react-flow/execution-node-wrapper";
 
 type DiscordNodeData = z.infer<typeof discordSchema> & {

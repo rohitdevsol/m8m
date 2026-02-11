@@ -6,7 +6,6 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { useParams } from "next/navigation";
@@ -35,6 +34,7 @@ export const GoogleFormTriggerDialog = ({ open, onOpenChange }: Props) => {
       await navigator.clipboard.writeText(webhookURL);
       toast.success("Webhook URL copied to clipboard");
     } catch (error) {
+      console.log(error);
       toast.error("Failed to copy webhook URL to clipboard");
     }
   };
@@ -90,6 +90,7 @@ export const GoogleFormTriggerDialog = ({ open, onOpenChange }: Props) => {
                   await navigator.clipboard.writeText(script);
                   toast.success("Script copied to clipboard");
                 } catch (error) {
+                  console.log(error);
                   toast.error("Failed to copy script to clipboard");
                 }
               }}

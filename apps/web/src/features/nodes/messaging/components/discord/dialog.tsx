@@ -21,19 +21,9 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { AVAILABLE_GEMINI_MODELS, discordSchema } from "@repo/types";
+import { discordSchema } from "@repo/types";
 import { useEffect } from "react";
 import z from "zod";
-import {
-  Select,
-  SelectTrigger,
-  SelectContent,
-  SelectItem,
-  SelectValue,
-} from "@/components/ui/select";
-import Image from "next/image";
-import { useCredentialsByType } from "@/features/credentials/hooks/use-credentials";
-import { CredentialType } from "@/config/node-types";
 
 export type DiscordFormValues = z.infer<typeof discordSchema>;
 

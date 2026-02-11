@@ -6,7 +6,6 @@ import { memo, useState } from "react";
 import { PlaceholderNode } from "./react-flow/placeholder-node";
 import { WorkflowNode } from "./workflow-node";
 import { NodeSelector } from "./node-selector";
-import { set } from "zod";
 
 export const InitialNode = memo((props: NodeProps) => {
   const [selectorOpen, setSelectorOpen] = useState(false);

@@ -1,12 +1,8 @@
 import {
-  Editor,
   EditorError,
   EditorLoading,
 } from "@/features/editor/components/editor";
-import {
-  ExecutionLogs,
-  ExecutionPreview,
-} from "@/features/executions/components/execution";
+import { ExecutionLogs } from "@/features/executions/components/execution";
 import { ExecutionHeader } from "@/features/executions/components/execution-header";
 import { prefetchExecution } from "@/features/executions/server/prefetch";
 import { requireAuth } from "@/lib/auth-utils";

@@ -4,7 +4,7 @@ import { useReactFlow, type Node, type NodeProps } from "@xyflow/react";
 import { GlobeIcon } from "lucide-react";
 import { memo, useState } from "react";
 import { httpSchema } from "@repo/types";
-import { BaseExecutionNode } from "../base-execution-node";
+import { BaseExecutionNode } from "@/features/nodes/basenodes/base-execution-node";
 import { HttpRequestDialog, HttpRequestFormValues } from "./dialog";
 import z from "zod";
 import { NodeStatus } from "@/components/react-flow/node-status-indicator";
@@ -20,7 +20,7 @@ type HttpRequestNodeType = Node<HttpNodeData>;
 export const HttpRequestNode = memo((props: NodeProps<HttpRequestNodeType>) => {
   const nodeData = props.data;
   const [dialogOpen, setDialogOpen] = useState(false);
-  const { setNodes, setEdges } = useReactFlow();
+  const { setNodes } = useReactFlow();
 
   const description = nodeData?.endpoint
     ? `${nodeData.method || "GET"}: \n${nodeData.endpoint}`

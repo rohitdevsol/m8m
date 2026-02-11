@@ -1,11 +1,10 @@
 "use client";
 
 import { CredentialType } from "@/config/node-types";
-import { useRouter, useParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import {
   useCreateCredential,
   useUpdateCredential,
-  useSuspenseCredentials,
 } from "../hooks/use-credentials";
 import {
   Form,

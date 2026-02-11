@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { useCreateExecutionThroughManualTrigger } from "@/features/executions/hooks/use-executions";
 import { FlaskConicalIcon } from "lucide-react";
-import { toast } from "sonner";
 
 //it will create the execute instance for a workflow
 

@@ -21,7 +21,6 @@ import {
 import { formatDistanceToNow } from "date-fns";
 import { Execution } from "@repo/database";
 import { ExecutionStatus } from "@/config/node-types";
-import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
 export const ExecutionsList = () => {

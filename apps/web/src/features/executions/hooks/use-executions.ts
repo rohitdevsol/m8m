@@ -1,7 +1,6 @@
 import { useTRPC } from "@/trpc/client";
 import {
   useMutation,
-  useQuery,
   useQueryClient,
   useSuspenseQuery,
 } from "@tanstack/react-query";

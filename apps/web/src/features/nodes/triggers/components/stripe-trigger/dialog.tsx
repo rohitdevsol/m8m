@@ -33,6 +33,7 @@ export const StripeTriggerDialog = ({ open, onOpenChange }: Props) => {
       await navigator.clipboard.writeText(webhookURL);
       toast.success("Webhook URL copied to clipboard");
     } catch (error) {
+      console.log(error);
       toast.error("Failed to copy webhook URL to clipboard");
     }
   };

@@ -5,7 +5,7 @@ import { slackSchema } from "@repo/types";
 import { SlackDialog, SlackFormValues } from "./dialog";
 import z from "zod";
 import { NodeStatus } from "@/components/react-flow/node-status-indicator";
-import { BaseExecutionNode } from "@/features/executions/components/base-execution-node";
+import { BaseExecutionNode } from "@/features/nodes/basenodes/base-execution-node";
 
 type SlackNodeData = z.infer<typeof slackSchema> & {
   status?: NodeStatus;
