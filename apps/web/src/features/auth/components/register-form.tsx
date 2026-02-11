@@ -28,6 +28,7 @@ import { Input } from "@/components/ui/input";
 import { authClient } from "@/lib/auth-client";
 import { RequiredLabel } from "@/components/ui/required-label";
 import { Loader } from "lucide-react";
+import { SocialButtons } from "./social-buttons";
 
 const registerSchema = z
   .object({
@@ -94,37 +95,7 @@ export default function SignupForm() {
             <form onSubmit={form.handleSubmit(onSubmit)}>
               <div className="grid gap-6">
                 <div className="flex flex-col gap-4">
-                  <Button
-                    variant="outline"
-                    className="w-full flex justify-center items-center"
-                    type="button"
-                    disabled={isPending}
-                    onClick={() =>
-                      authClient.signIn.social({ provider: "github" })
-                    }
-                  >
-                    <Image
-                      src={"./github.svg"}
-                      alt="GitHub"
-                      height={20}
-                      width={20}
-                    />
-                    Continue with GitHub
-                  </Button>
-                  <Button
-                    variant="outline"
-                    className="w-full flex justify-center items-center"
-                    type="button"
-                    disabled={isPending}
-                  >
-                    <Image
-                      src={"./google.svg"}
-                      alt="GitHub"
-                      height={20}
-                      width={20}
-                    />
-                    Continue with Google
-                  </Button>
+                  <SocialButtons isPending={isPending} />
                 </div>
                 <div className="grid gap-6">
                   {/* Name */}
