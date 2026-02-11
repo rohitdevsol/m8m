@@ -96,6 +96,22 @@ export const slackSchema = z.object({
     .min(1, "Minimum length should be one"),
 });
 
+export const telegramSchema = z.object({
+  name: z
+    .string("Name is required")
+    .min(1, "Variable name is required")
+    .regex(/^[a-zA-Z_][a-zA-Z0-9_]*$/, "Invalid variable name"),
+
+  botToken: z.string("Bot token is required").min(10, "Bot token is required"),
+
+  chatId: z.string("Chat ID is required").min(1, "Chat ID is required"),
+
+  content: z.string("Message is required").min(1, "Message is required"),
+
+  parseMode: z.enum(["HTML", "MarkdownV2"]).optional(),
+});
+
+export type TelegramNodeConfig = z.infer<typeof telegramSchema>;
 export type SlackNodeConfig = z.infer<typeof slackSchema>;
 export type DiscordNodeConfig = z.infer<typeof discordSchema>;
 export type GeminiNodeConfig = z.infer<typeof geminiSchema>;
