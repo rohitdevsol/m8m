@@ -10,7 +10,8 @@
     "@types/bun": "latest",
     "@repo/database": "*",
     "@repo/kafka": "*",
-    "@repo/types": "*"
+    "@repo/types": "*",
+    "@repo/common": "*"
   },
   "peerDependencies": {
     "typescript": "^5"

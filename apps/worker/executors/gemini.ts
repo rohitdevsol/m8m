@@ -3,6 +3,7 @@ import { prisma, type Node } from "@repo/database";
 import { GoogleGenAI } from "@google/genai";
 import { geminiSchema } from "@repo/types";
 import { resolveTemplate } from "../utils/template";
+import { decrypt } from "@repo/common";
 
 type geminiHandlerInput = {
   node: Partial<Node>;
@@ -19,13 +20,14 @@ export const geminiHandler = async ({
 
   //finding out the credentials
 
-  const credential = await prisma.credential.findFirstOrThrow({
+  let credential = await prisma.credential.findFirstOrThrow({
     where: {
       id: credentialId,
       userId: userId,
       type: "GEMINI",
     },
   });
+
   const resolvedPrompt = resolveTemplate(userPrompt, inputs) as string;
   const resolvedSystemPrompt = resolveTemplate(systemPrompt, inputs) as string;
 
@@ -33,7 +35,7 @@ export const geminiHandler = async ({
   console.log("[resolvedSystemPrompt]", resolvedSystemPrompt);
   const defaultSystemPrompt = `You are a helpful assistant. You answer as concisely as possible.`;
   const ai = new GoogleGenAI({
-    apiKey: credential.value,
+    apiKey: decrypt(credential.value),
   });
 
   const response = await ai.models.generateContent({
