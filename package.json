@@ -5,7 +5,7 @@
     "seed": "tsx packages/database/src/seed.ts"
   },
   "scripts": {
-    "build": "dotenv -- turbo run build",
+    "web:build": "dotenv -- turbo run web:build",
     "db:migrate:deploy": "dotenv -- turbo run db:migrate:deploy",
     "db:migrate:dev": "dotenv -- turbo run db:migrate:dev",
     "db:push": "dotenv -- turbo run db:push",
@@ -14,7 +14,7 @@
     "db:migrate:reset": "dotenv -- turbo run db:migrate:reset",
     "worker:dev": "dotenv -- turbo run worker:dev",
     "producer:dev": "dotenv -- turbo run producer:dev",
-    "studio": "dotenv -- turbo run db:studio",
+    "db:studio": "dotenv -- turbo run db:studio",
     "dev": "dotenv -- turbo run dev",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "lint": "turbo run lint"
@@ -24,7 +24,8 @@
     "prettier": "^3.2.5",
     "prisma": "latest",
     "tsx": "4.19.1",
-    "turbo": "^2.8.0"
+    "turbo": "^2.8.0",
+    "typescript-eslint": "^8.55.0"
   },
   "engines": {
     "node": ">=18"
