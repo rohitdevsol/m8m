@@ -1,6 +1,6 @@
 {
   "$schema": "https://turborepo.dev/schema.json",
-  "globalEnv": [],
+  "ui": "tui",
   "tasks": {
     "build": {
       "dependsOn": [
@@ -11,52 +11,80 @@
         ".env*"
       ],
       "outputs": [
-        "dist/**",
         ".next/**",
         "!.next/cache/**"
       ],
-    },
-    "web:dev": {
-      "cache": false,
       "env": [
         "DATABASE_URL",
         "NODE_ENV",
         "NEXT_PUBLIC_*",
         "BETTER_AUTH_BASE_URL",
-        "BETTER_AUTH_SECRET"
+        "BETTER_AUTH_SECRET",
+        "ENCRYPTION_KEY",
+        "GITHUB_CLIENT_ID",
+        "GITHUB_CLIENT_SECRET",
+        "GOOGLE_CLIENT_ID",
+        "GOOGLE_CLIENT_SECRET",
+        "GEMINI_API_KEY",
+        "OPEN_ROUTER_API_KEY"
       ]
     },
-    "web:start": {
+    "dev:all": {
+      "cache": false
+    },
+    "dev": {
       "cache": false,
+      "persistent": true,
       "env": [
         "DATABASE_URL",
         "NODE_ENV",
         "NEXT_PUBLIC_*",
         "BETTER_AUTH_BASE_URL",
-        "BETTER_AUTH_SECRET"
+        "BETTER_AUTH_SECRET",
+        "ENCRYPTION_KEY",
+        "GITHUB_CLIENT_ID",
+        "GITHUB_CLIENT_SECRET",
+        "GOOGLE_CLIENT_ID",
+        "GOOGLE_CLIENT_SECRET"
       ]
     },
-    "web:build": {
+    "start": {
+      "dependsOn": [
+        "build"
+      ],
       "cache": false,
+      "persistent": true,
       "env": [
         "DATABASE_URL",
         "NODE_ENV",
         "NEXT_PUBLIC_*",
         "BETTER_AUTH_BASE_URL",
-        "BETTER_AUTH_SECRET"
+        "BETTER_AUTH_SECRET",
+        "ENCRYPTION_KEY",
+        "GITHUB_CLIENT_ID",
+        "GITHUB_CLIENT_SECRET",
+        "GOOGLE_CLIENT_ID",
+        "GOOGLE_CLIENT_SECRET"
+      ]
+    },
+    "lint": {
+      "dependsOn": [
+        "^lint"
+      ]
+    },
+    "generate": {
+      "dependsOn": [
+        "^generate"
+      ],
+      "cache": false,
+      "env": [
+        "DATABASE_URL"
       ]
     },
     "db:migrate:dev": {
+      "cache": false,
       "persistent": true,
-      "cache": false,
       "interactive": true,
-      "env": [
-        "DATABASE_URL",
-        "TURBO_UI"
-      ]
-    },
-    "db:migrate:reset": {
-      "cache": false,
       "env": [
         "DATABASE_URL"
       ]
@@ -85,24 +113,14 @@
         "DATABASE_URL"
       ]
     },
-    "dev": {
-      "cache": false,
-      "persistent": true,
-      "env": [
-        "DATABASE_URL",
-        "NODE_ENV",
-        "GITHUB_CLIENT_ID",
-        "GITHUB_CLIENT_SECRET",
-        "NEXT_PUBLIC_*"
-      ]
-    },
     "worker:dev": {
       "cache": false,
       "persistent": true,
       "env": [
         "DATABASE_URL",
         "GEMINI_API_KEY",
-        "OPEN_ROUTER_API_KEY"
+        "OPEN_ROUTER_API_KEY",
+        "ENCRYPTION_KEY"
       ]
     },
     "producer:dev": {
@@ -111,18 +129,6 @@
       "env": [
         "DATABASE_URL"
       ]
-    },
-    "generate": {
-      "dependsOn": [
-        "^generate"
-      ],
-      "cache": false,
-      "env": [
-        "DATABASE_URL"
-      ]
-    },
-    "lint": {
-      "env": []
     }
   }
 }
