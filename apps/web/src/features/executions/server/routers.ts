@@ -2,6 +2,7 @@ import { createTRPCRouter, protectedProcedure } from "@/trpc/init";
 import { prisma } from "@repo/database";
 import z from "zod";
 import { PAGINATION } from "@/config/constants";
+import { snapshotWorkflow } from "@repo/common";
 
 export const executionsRouter = createTRPCRouter({
   getOne: protectedProcedure
@@ -27,30 +28,37 @@ export const executionsRouter = createTRPCRouter({
   createExecution: protectedProcedure
     .input(z.object({ workflowId: z.string() }))
     .mutation(async ({ ctx, input }) => {
-      await prisma.workflow.findUniqueOrThrow({
+      const workflow = await prisma.workflow.findUniqueOrThrow({
         where: {
           id: input.workflowId,
           userId: ctx.auth.user.id,
         },
+        include: {
+          nodes: true,
+          connections: true,
+        },
       });
+
+      const snapshot = snapshotWorkflow(workflow.nodes, workflow.connections);
+
       return prisma.$transaction(async (tx) => {
         const execution = await tx.execution.create({
           data: {
-            workflowId: input.workflowId,
+            workflowId: workflow.id,
             status: "PENDING",
+
+            workflowSnapshotNodes: snapshot.nodes,
+            workflowSnapshotConnections: snapshot.connections,
           },
         });
 
         await tx.executionQueue.create({
-          data: {
-            executionId: execution.id,
-          },
+          data: { executionId: execution.id },
         });
 
         return execution;
       });
     }),
-
   getMany: protectedProcedure
     .input(
       z.object({

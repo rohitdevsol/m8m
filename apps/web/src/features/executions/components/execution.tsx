@@ -68,14 +68,14 @@ export const ExecutionPreview = ({ executionId }: { executionId: string }) => {
   const { data: execution } = useLiveExecution(executionId);
 
   const nodes = useMemo(() => {
-    return execution.workflow.nodes.map((dbNode) => {
+    return (execution.workflowSnapshotNodes as any[]).map((dbNode) => {
       const run = execution.nodeRuns.find((r) => r.nodeId === dbNode.id);
 
       const safeData = asObject(dbNode.data);
 
       return {
         id: dbNode.id,
-        type: NodeType[dbNode.type],
+        type: NodeType[dbNode.type as NodeType],
         position: parsePosition(dbNode.position),
 
         data: {
@@ -87,7 +87,7 @@ export const ExecutionPreview = ({ executionId }: { executionId: string }) => {
     });
   }, [execution]);
 
-  const edges = execution.workflow.connections.map((c) => ({
+  const edges = (execution.workflowSnapshotConnections as any[]).map((c) => ({
     id: c.id,
 
     source: c.fromNodeId,
