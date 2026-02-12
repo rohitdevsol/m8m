@@ -1,3 +1,4 @@
+import { snapshotWorkflow } from "@repo/common";
 import { prisma } from "@repo/database";
 import { type NextRequest, NextResponse } from "next/server";
 
@@ -24,11 +25,21 @@ export async function POST(req: NextRequest) {
     };
 
     await prisma.$transaction(async (tx) => {
+      const workflow = await tx.workflow.findUniqueOrThrow({
+        where: { id: workflowId },
+        include: { nodes: true, connections: true },
+      });
+
+      const snapshot = snapshotWorkflow(workflow.nodes, workflow.connections);
+
       const execution = await tx.execution.create({
         data: {
           workflowId,
           status: "PENDING",
           triggerData: formData,
+
+          workflowSnapshotNodes: snapshot.nodes,
+          workflowSnapshotConnections: snapshot.connections,
         },
       });
 
