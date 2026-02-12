@@ -3,11 +3,8 @@ export function serializeError(err: unknown): {
   stack?: string | null;
   raw?: any;
 } {
-  // Normal Error
   if (err instanceof Error) {
     const msg = err.message;
-
-    // Try parsing JSON inside message
     try {
       const parsed = JSON.parse(msg);
 
@@ -28,7 +25,6 @@ export function serializeError(err: unknown): {
     };
   }
 
-  // API object error
   if (typeof err === "object" && err !== null) {
     const anyErr = err as any;
 

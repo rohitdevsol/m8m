@@ -11,8 +11,6 @@ export async function runExecution(executionId: string) {
     include: {
       workflow: {
         include: {
-          nodes: true,
-          connections: true,
           user: true,
         },
       },
@@ -25,8 +23,8 @@ export async function runExecution(executionId: string) {
 
   if (execution.status === "FAILED") return;
 
-  const nodes = execution.workflow.nodes;
-  const edges = execution.workflow.connections;
+  const nodes = execution.workflowSnapshotNodes as any[];
+  const edges = execution.workflowSnapshotConnections as any[];
 
   if (!nodes.length) throw new Error("No nodes");
   if (!edges.length) throw new Error("No edges");
