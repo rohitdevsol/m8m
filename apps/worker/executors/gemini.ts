@@ -47,7 +47,7 @@ export const geminiHandler = async ({
     ],
     config: {
       systemInstruction:
-        resolvedSystemPrompt.length < 1
+        resolvedSystemPrompt.length > 0
           ? resolvedSystemPrompt
           : defaultSystemPrompt,
     },

@@ -34,7 +34,6 @@ export const openAIHandler = async ({
   const defaultSystemPrompt = `You are a helpful assistant. You answer as concisely as possible.`;
 
   const openai = new OpenAI({
-    baseURL: "https://openrouter.ai/api/v1",
     apiKey: decrypt(credential.value),
   });
   const completion = await openai.chat.completions.create({
@@ -52,7 +51,7 @@ export const openAIHandler = async ({
       {
         role: "system",
         content:
-          resolvedSystemPrompt.length < 1
+          resolvedSystemPrompt.length > 0
             ? resolvedSystemPrompt
             : defaultSystemPrompt,
       },

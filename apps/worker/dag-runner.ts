@@ -9,7 +9,7 @@ import { toJsonSafe } from "./utils/json";
 import { serializeError } from "./utils/error";
 import { sleep } from "./utils/sleep";
 
-const BASE_DELAY = 1000;
+const BASE_DELAY = 2000;
 
 const TRIGGER_TYPES = new Set([
   "MANUAL_TRIGGER",
