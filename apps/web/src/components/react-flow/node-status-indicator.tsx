@@ -3,7 +3,12 @@ import { LoaderCircle } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
-export type NodeStatus = "loading" | "success" | "error" | "initial";
+export type NodeStatus =
+  | "loading"
+  | "success"
+  | "error"
+  | "initial"
+  | "retrying";
 
 export type NodeStatusVariant = "overlay" | "border";
 
@@ -126,7 +131,47 @@ export const NodeStatusIndicator = ({
           {children}
         </StatusBorder>
       );
+    case "retrying":
+      switch (variant) {
+        case "overlay":
+          return <RetryPulseIndicator>{children}</RetryPulseIndicator>;
+
+        case "border":
+          return <RetryPulseIndicator>{children}</RetryPulseIndicator>;
+
+        default:
+          return <>{children}</>;
+      }
     default:
       return <>{children}</>;
   }
+};
+
+export const RetryPulseIndicator = ({ children }: { children: ReactNode }) => {
+  return (
+    <div className="relative">
+      <StatusBorder className="border-yellow-600/50">{children}</StatusBorder>
+
+      <style>
+        {`
+        @keyframes retry-pulse {
+          0% { transform: scale(0.95); opacity: 0.6; }
+          70% { transform: scale(1.15); opacity: 0; }
+          100% { transform: scale(1.15); opacity: 0; }
+        }
+
+        @keyframes retry-spin {
+          from { transform: translate(-50%, -50%) rotate(0deg); }
+          to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        .retry-pulse {
+          animation: retry-pulse 1.4s ease-out infinite;
+        }
+      `}
+      </style>
+
+      <span className="retry-pulse absolute top-1/2 left-1/2 z-40 h-10 w-10 -translate-x-1/2 -translate-y-1/2 rounded-full bg-yellow-500/30" />
+    </div>
+  );
 };
