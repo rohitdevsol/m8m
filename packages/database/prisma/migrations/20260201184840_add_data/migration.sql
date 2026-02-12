@@ -1,3 +1,0 @@
--- AlterTable
-ALTER TABLE "Node" ADD COLUMN     "data" JSONB NOT NULL DEFAULT '{}',
-ALTER COLUMN "position" DROP DEFAULT;

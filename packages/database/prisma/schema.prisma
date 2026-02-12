@@ -155,6 +155,9 @@ model Execution {
   output    Json?
   triggerData Json?
 
+  workflowSnapshotNodes Json
+  workflowSnapshotConnections Json
+
   startedAt DateTime @default(now())
   completedAt DateTime?
 
@@ -181,7 +184,10 @@ model NodeRun {
   input       Json?
   output      Json?
   error       String? @db.Text
-  errorStack  String?   @db.Text 
+  errorStack  String?   @db.Text
+
+  attempts    Int  @default(0)
+  maxAttempts Int  @default(3) 
 
   startedAt   DateTime?
   endedAt     DateTime?
@@ -195,6 +201,7 @@ enum NodeRunStatus {
   INITIAL
   ERROR
   SUCCESS
+  RETRYING
   LOADING
   SKIPPED
 }
