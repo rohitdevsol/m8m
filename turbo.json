@@ -89,6 +89,12 @@
         "DATABASE_URL"
       ]
     },
+    "db:migrate:reset": {
+      "cache": false,
+      "env": [
+        "DATABASE_URL"
+      ]
+    },
     "db:migrate:deploy": {
       "cache": false,
       "env": [
