@@ -1,6 +1,7 @@
 import { InitialNode } from "@/components/initial-node";
 import { NodeType } from "@/config/node-types";
 import { GeminiNode } from "@/features/nodes/actions/gemini/node";
+import { grokNode } from "@/features/nodes/actions/grok/node";
 import { HttpRequestNode } from "@/features/nodes/actions/http-request/node";
 import { OpenAINode } from "@/features/nodes/actions/openai/node";
 import { DiscordNode } from "@/features/nodes/messaging/components/discord/node";
@@ -31,6 +32,7 @@ export const nodeComponents: NodeTypes = {
   [NodeType.DISCORD]: DiscordNode,
   [NodeType.SLACK]: SlackNode,
   [NodeType.TELEGRAM]: TelegramNode,
+  [NodeType.GROK]: grokNode,
 } as const satisfies NodeTypes;
 
 export type RegisteredNodeType = keyof typeof nodeComponents;

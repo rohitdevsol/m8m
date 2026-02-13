@@ -67,6 +67,18 @@ const executionNodes: NodeTypeOption[] = [
     icon: "/openai.svg",
   },
   {
+    type: NodeType.GROK,
+    label: "Grok",
+    description: "Uses Grok to generate text",
+    icon: "/grok.svg",
+  },
+  {
+    type: NodeType.ANTHROPIC,
+    label: "Anthropic",
+    description: "Uses Anthropic to generate text",
+    icon: "/anthropic.svg",
+  },
+  {
     type: NodeType.DISCORD,
     label: "Discord",
     description: "Sends a message to a Discord channel",

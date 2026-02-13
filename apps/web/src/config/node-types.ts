@@ -10,12 +10,14 @@ export const NodeType = {
   DISCORD: "DISCORD",
   SLACK: "SLACK",
   TELEGRAM: "TELEGRAM",
+  GROK: "GROK",
 } as const;
 
 export const CredentialType = {
   OPENAI: "OPENAI",
   GEMINI: "GEMINI",
   ANTHROPIC: "ANTHROPIC",
+  GROK: "GROK",
 } as const;
 
 export const ExecutionStatus = {
