@@ -4,6 +4,7 @@ import { geminiHandler } from "./executors/gemini";
 import { openAIHandler } from "./executors/openai";
 import { discordHandler } from "./executors/discord";
 import { telegramHandler } from "./executors/telegram";
+import { grokHandler } from "./executors/grok";
 export async function runNode(
   node: Node,
   context: Record<string, any>,
@@ -30,6 +31,13 @@ export async function runNode(
 
     case "OPENAI":
       return openAIHandler({
+        node,
+        inputs: context,
+        userId: user.id!,
+      });
+
+    case "GROK":
+      return grokHandler({
         node,
         inputs: context,
         userId: user.id!,
