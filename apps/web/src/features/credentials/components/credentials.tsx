@@ -41,6 +41,7 @@ const credentialLogos: Record<CredentialType, string> = {
   [CredentialType.OPENAI]: "/openai.svg",
   [CredentialType.ANTHROPIC]: "/anthropic.svg",
   [CredentialType.GEMINI]: "/gemini.svg",
+  [CredentialType.GROK]: "/grok.svg",
 };
 
 export const CredentialsSearch = () => {

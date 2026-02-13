@@ -60,15 +60,20 @@ const credentialTypeOptions = [
     label: "OpenAI",
     logo: "/openai.svg",
   },
-  {
-    value: CredentialType.ANTHROPIC,
-    label: "Anthropic",
-    logo: "/anthropic.svg",
-  },
+  // {
+  //   value: CredentialType.ANTHROPIC,
+  //   label: "Anthropic",
+  //   logo: "/anthropic.svg",
+  // },
   {
     value: CredentialType.GEMINI,
     label: "Gemini",
     logo: "/gemini.svg",
+  },
+  {
+    value: CredentialType.GROK,
+    label: "Grok",
+    logo: "/grok.svg",
   },
 ];
 
