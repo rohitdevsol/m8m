@@ -214,6 +214,7 @@ enum NodeType {
   GOOGLE_FORM_TRIGGER
   STRIPE_TRIGGER
   GEMINI
+  GROK
   ANTHROPIC
   OPENAI
   DISCORD
@@ -225,6 +226,7 @@ enum CredentialType {
   OPENAI
   ANTHROPIC
   GEMINI
+  GROK
 }
 
 enum ExecutionStatus {

@@ -6,7 +6,7 @@
   },
   "scripts": {
     "db:migrate:deploy": "prisma migrate deploy",
-    "db:migrate:dev": "prisma migrate dev --name add_execution_snapshot",
+    "db:migrate:dev": "prisma migrate dev --name add_grok",
     "db:push": "prisma db push",
     "db:migrate:reset": "prisma migrate reset --force",
     "db:seed": "tsx src/seed.ts",
