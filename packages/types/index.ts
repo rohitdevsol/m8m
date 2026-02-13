@@ -15,6 +15,14 @@ export const AVAILABLE_OPENAI_MODELS = [
   "gpt-3.5-turbo",
 ] as const;
 
+export const AVAILABLE_GROK_MODELS = [
+  "grok-4-1-fast-reasoning",
+  "grok-4-1-fast-non-reasoning",
+  "grok-4-fast",
+  "grok-3",
+  "grok-3-mini",
+];
+
 export const httpSchema = z.object({
   name: z
     .string("Name is required")
@@ -54,6 +62,20 @@ export const openaiSchema = z.object({
     ),
   credentialId: z.string("Credential is required"),
   model: z.enum(AVAILABLE_OPENAI_MODELS),
+  systemPrompt: z.string().optional(),
+  userPrompt: z.string().min(1, "User prompt is required"),
+});
+
+export const grokSchema = z.object({
+  name: z
+    .string("Name is required")
+    .min(2, "Name must be at least 2 characters long")
+    .regex(
+      /^[A-Za-z_$][A-Za-z0-9_$]*$/,
+      "Name must start with a letter, underscore or dollar sign and can only contain letters, numbers, underscores or dollar signs",
+    ),
+  credentialId: z.string("Credential is required"),
+  model: z.enum(AVAILABLE_GROK_MODELS),
   systemPrompt: z.string().optional(),
   userPrompt: z.string().min(1, "User prompt is required"),
 });
@@ -115,5 +137,6 @@ export type SlackNodeConfig = z.infer<typeof slackSchema>;
 export type DiscordNodeConfig = z.infer<typeof discordSchema>;
 export type GeminiNodeConfig = z.infer<typeof geminiSchema>;
 export type OpenaiNodeConfig = z.infer<typeof openaiSchema>;
+export type GrokNodeConfig = z.infer<typeof grokSchema>;
 
 export type HttpNodeConfig = z.infer<typeof httpSchema>;
