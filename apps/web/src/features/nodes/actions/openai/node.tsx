@@ -12,6 +12,7 @@ import { ExecutionNodeWrapper } from "@/components/react-flow/execution-node-wra
 type OpenAINodeData = z.infer<typeof openaiSchema> & {
   status?: NodeStatus;
   runError?: string | null;
+  runOutput?: string | null;
 };
 
 type OpenAINodeType = Node<OpenAINodeData>;
@@ -57,7 +58,11 @@ export const OpenAINode = memo((props: NodeProps<OpenAINodeType>) => {
         onSubmit={handleSubmit}
         defaultValues={nodeData}
       />
-      <ExecutionNodeWrapper status={nodeStatus} error={error}>
+      <ExecutionNodeWrapper
+        status={nodeStatus}
+        error={error}
+        output={nodeData.runOutput}
+      >
         <BaseExecutionNode
           {...props}
           id={props.id}

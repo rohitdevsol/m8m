@@ -12,6 +12,7 @@ import { ExecutionNodeWrapper } from "@/components/react-flow/execution-node-wra
 type grokNodeData = z.infer<typeof grokSchema> & {
   status?: NodeStatus;
   runError?: string | null;
+  runOutput?: string | null;
 };
 
 type grokNodeType = Node<grokNodeData>;
@@ -57,7 +58,11 @@ export const grokNode = memo((props: NodeProps<grokNodeType>) => {
         onSubmit={handleSubmit}
         defaultValues={nodeData}
       />
-      <ExecutionNodeWrapper status={nodeStatus} error={error}>
+      <ExecutionNodeWrapper
+        status={nodeStatus}
+        error={error}
+        output={nodeData.runOutput}
+      >
         <BaseExecutionNode
           {...props}
           id={props.id}

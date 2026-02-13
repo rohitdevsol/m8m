@@ -35,6 +35,7 @@ import {
 import { formatDistanceToNow } from "date-fns";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 export const ExecutionLoading = () => {
   return <LoadingView message="Loading execution..." />;
@@ -81,7 +82,8 @@ export const ExecutionPreview = ({ executionId }: { executionId: string }) => {
         data: {
           ...safeData,
           status: (run?.status ?? "PENDING").toLowerCase() as NodeStatus,
-          runError: run?.error || null,
+          runError: run?.error ?? null,
+          runOutput: run?.output ?? null,
         },
       };
     });
@@ -99,27 +101,29 @@ export const ExecutionPreview = ({ executionId }: { executionId: string }) => {
 
   return (
     <div className="size-full">
-      <ReactFlow
-        nodes={nodes}
-        edges={edges}
-        nodeTypes={nodeComponents}
-        fitView
-        proOptions={{ hideAttribution: true }}
-        snapGrid={[10, 10]}
-        snapToGrid
-      >
-        <Background />
+      <TooltipProvider delayDuration={200}>
+        <ReactFlow
+          nodes={nodes}
+          edges={edges}
+          nodeTypes={nodeComponents}
+          fitView
+          proOptions={{ hideAttribution: true }}
+          snapGrid={[10, 10]}
+          snapToGrid
+        >
+          <Background />
 
-        <Panel position="top-right">
-          <Link
-            prefetch
-            className="text-white dark:text-black text-sm hover:underline border py-2 px-3 bg-primary  rounded-md"
-            href={`/executions/${executionId}/logs`}
-          >
-            View Logs
-          </Link>
-        </Panel>
-      </ReactFlow>
+          <Panel position="top-right">
+            <Link
+              prefetch
+              className="text-white dark:text-black text-sm hover:underline border py-2 px-3 bg-primary  rounded-md"
+              href={`/executions/${executionId}/logs`}
+            >
+              View Logs
+            </Link>
+          </Panel>
+        </ReactFlow>
+      </TooltipProvider>
     </div>
   );
 };

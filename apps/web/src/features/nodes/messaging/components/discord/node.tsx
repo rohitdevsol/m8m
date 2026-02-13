@@ -12,6 +12,7 @@ import { ExecutionNodeWrapper } from "@/components/react-flow/execution-node-wra
 type DiscordNodeData = z.infer<typeof discordSchema> & {
   status?: NodeStatus;
   runError?: string | null;
+  runOutput?: string | null;
 };
 
 type DiscordNodeType = Node<DiscordNodeData>;
@@ -57,7 +58,11 @@ export const DiscordNode = memo((props: NodeProps<DiscordNodeType>) => {
         onSubmit={handleSubmit}
         defaultValues={nodeData}
       />
-      <ExecutionNodeWrapper status={nodeStatus} error={error}>
+      <ExecutionNodeWrapper
+        status={nodeStatus}
+        error={error}
+        output={nodeData.runOutput}
+      >
         <BaseExecutionNode
           {...props}
           id={props.id}

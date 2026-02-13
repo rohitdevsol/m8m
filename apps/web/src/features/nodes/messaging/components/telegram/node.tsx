@@ -17,6 +17,7 @@ import { ExecutionNodeWrapper } from "@/components/react-flow/execution-node-wra
 type TelegramNodeData = z.infer<typeof telegramSchema> & {
   status?: NodeStatus;
   runError?: string | null;
+  runOutput?: string | null;
 };
 
 type TelegramNodeType = Node<TelegramNodeData>;
@@ -69,7 +70,11 @@ export const TelegramNode = memo((props: NodeProps<TelegramNodeType>) => {
         defaultValues={nodeData}
       />
 
-      <ExecutionNodeWrapper status={status} error={error}>
+      <ExecutionNodeWrapper
+        status={status}
+        error={error}
+        output={nodeData.runOutput}
+      >
         <BaseExecutionNode
           {...props}
           id={props.id}

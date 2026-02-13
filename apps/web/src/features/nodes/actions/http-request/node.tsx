@@ -13,6 +13,7 @@ import { ExecutionNodeWrapper } from "@/components/react-flow/execution-node-wra
 type HttpNodeData = z.infer<typeof httpSchema> & {
   status?: NodeStatus;
   runError?: string | null;
+  runOutput?: string | null;
 };
 
 type HttpRequestNodeType = Node<HttpNodeData>;
@@ -58,7 +59,11 @@ export const HttpRequestNode = memo((props: NodeProps<HttpRequestNodeType>) => {
         onSubmit={handleSubmit}
         defaultValues={nodeData}
       />
-      <ExecutionNodeWrapper status={nodeStatus} error={error}>
+      <ExecutionNodeWrapper
+        status={nodeStatus}
+        error={error}
+        output={nodeData.runOutput}
+      >
         <BaseExecutionNode
           {...props}
           id={props.id}

@@ -12,6 +12,7 @@ import { BaseExecutionNode } from "@/features/nodes/basenodes/base-execution-nod
 type GeminiNodeData = z.infer<typeof geminiSchema> & {
   status?: NodeStatus;
   runError?: string | null;
+  runOutput?: string | null;
 };
 
 type GeminiNodeType = Node<GeminiNodeData>;
@@ -57,7 +58,11 @@ export const GeminiNode = memo((props: NodeProps<GeminiNodeType>) => {
         onSubmit={handleSubmit}
         defaultValues={nodeData}
       />
-      <ExecutionNodeWrapper status={nodeStatus} error={error}>
+      <ExecutionNodeWrapper
+        status={nodeStatus}
+        error={error}
+        output={nodeData.runOutput}
+      >
         <BaseExecutionNode
           {...props}
           id={props.id}
