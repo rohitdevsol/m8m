@@ -146,7 +146,7 @@ export function EditorHeader({ workflowId }: { workflowId: string }) {
       <EditorBreadcrumbs workflowId={workflowId} />
       <EditorSaveButton workflowId={workflowId} />
 
-      <ModeToggle />
+      {/* <ModeToggle /> */}
     </header>
   );
 }

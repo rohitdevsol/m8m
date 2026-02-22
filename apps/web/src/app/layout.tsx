@@ -14,7 +14,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className="p-0 m-0 ">
         <TRPCReactProvider>
-          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <ThemeProvider attribute="class" defaultTheme="dark" >
             <NuqsAdapter>
               <Provider>
                 {children}

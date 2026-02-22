@@ -55,7 +55,7 @@ export default function LoginForm() {
         onSuccess: () => {
           toast.success("Login successful");
           form.reset(defaultValues);
-          router.push("/");
+          router.push("/workflows");
         },
         onError: (ctx) => {
           toast.error(ctx.error.message);

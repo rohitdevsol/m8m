@@ -44,7 +44,7 @@ export function ExecutionHeader({ executionId }: { executionId: string }) {
         <SidebarTrigger />
         <ExecutionBreadCrumbs executionId={executionId} />
       </div>
-      <ModeToggle />
+      {/* <ModeToggle /> */}
     </header>
   );
 }
