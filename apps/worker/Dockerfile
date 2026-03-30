@@ -10,7 +10,7 @@ COPY packages/kafka/package.json ./packages/kafka/
 COPY packages/types/package.json ./packages/types/
 COPY packages/common/package.json ./packages/common/
 # Add other packages as needed
-RUN bun install --frozen-lockfile
+RUN bun install
 
 # Build
 FROM base AS builder

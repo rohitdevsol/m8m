@@ -8,7 +8,7 @@ COPY apps/producer/package.json ./apps/producer/
 COPY packages/database/package.json ./packages/database/
 COPY packages/kafka/package.json ./packages/kafka/
 # Add other packages as needed
-RUN bun install --frozen-lockfile
+RUN bun install 
 
 # Build
 FROM base AS builder
