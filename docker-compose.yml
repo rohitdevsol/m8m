@@ -1,6 +1,21 @@
 services:
+  postgresql:
+    image: postgres:16-alpine
+    container_name: m8m-postgres
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
+      POSTGRES_DB: ${POSTGRES_DB:-m8m}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - internal
+
   redpanda:
     image: docker.redpanda.com/redpandadata/redpanda:v24.1.1
+    container_name: m8m-redpanda
+    restart: always
     command:
       - redpanda
       - start
@@ -11,12 +26,84 @@ services:
       - --node-id 0
       - --check=false
       - --kafka-addr PLAINTEXT://0.0.0.0:9092
-      - --advertise-kafka-addr PLAINTEXT://localhost:9092
+      - --advertise-kafka-addr PLAINTEXT://redpanda:9092
     ports:
       - "9092:9092"
       - "9644:9644"
     volumes:
       - redpanda-data:/var/lib/redpanda/data
+    networks:
+      - internal
+
+  web:
+    image: ${DOCKERHUB_USERNAME:-rohitdevsol}/m8m-web:latest
+    container_name: m8m-web
+    restart: always
+    environment:
+      DATABASE_URL: "postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-password}@postgresql:5432/${POSTGRES_DB:-m8m}?schema=public"
+      BETTER_AUTH_SECRET: ${BETTER_AUTH_SECRET}
+      BETTER_AUTH_URL: ${BETTER_AUTH_URL}
+      BETTER_AUTH_BASE_URL: ${BETTER_AUTH_BASE_URL}
+      GITHUB_CLIENT_ID: ${GITHUB_CLIENT_ID}
+      GITHUB_CLIENT_SECRET: ${GITHUB_CLIENT_SECRET}
+      REDIS_URL: ${REDIS_URL}
+      KAFKA_BROKERS: "redpanda:9092"
+    depends_on:
+      - postgresql
+      - redpanda
+    networks:
+      - internal
+
+  producer:
+    image: ${DOCKERHUB_USERNAME:-rohitdevsol}/m8m-producer:latest
+    container_name: m8m-producer
+    restart: always
+    environment:
+      DATABASE_URL: "postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-password}@postgresql:5432/${POSTGRES_DB:-m8m}?schema=public"
+      KAFKA_BROKERS: "redpanda:9092"
+    depends_on:
+      - postgresql
+      - redpanda
+    networks:
+      - internal
+
+  worker:
+    image: ${DOCKERHUB_USERNAME:-rohitdevsol}/m8m-worker:latest
+    container_name: m8m-worker
+    restart: always
+    environment:
+      DATABASE_URL: "postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-password}@postgresql:5432/${POSTGRES_DB:-m8m}?schema=public"
+      KAFKA_BROKERS: "redpanda:9092"
+    depends_on:
+      - postgresql
+      - redpanda
+    networks:
+      - internal
+
+  caddy:
+    image: caddy:latest
+    container_name: m8m-caddy
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      DOMAIN: ${DOMAIN}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy-data:/data
+      - caddy-config:/config
+    networks:
+      - internal
+    depends_on:
+      - web
 
 volumes:
   redpanda-data:
+  postgres-data:
+  caddy-data:
+  caddy-config:
+
+networks:
+  internal:
+    driver: bridge

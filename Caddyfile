@@ -1,0 +1,8 @@
+{$DOMAIN} {
+    reverse_proxy m8m-web:3000
+}
+
+# Optional: Redirect www to non-www
+# www.{$DOMAIN} {
+#     redir https://{$DOMAIN}{uri}
+# }

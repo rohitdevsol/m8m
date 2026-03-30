@@ -26,7 +26,6 @@
         "GOOGLE_CLIENT_ID",
         "GOOGLE_CLIENT_SECRET",
         "GEMINI_API_KEY",
-        "OPEN_ROUTER_API_KEY"
       ]
     },
     "dev:all": {
@@ -125,7 +124,6 @@
       "env": [
         "DATABASE_URL",
         "GEMINI_API_KEY",
-        "OPEN_ROUTER_API_KEY",
         "ENCRYPTION_KEY"
       ]
     },
