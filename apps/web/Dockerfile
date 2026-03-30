@@ -17,6 +17,8 @@ RUN bun install
 
 # Rebuild the source code only when needed
 FROM base AS builder
+# Next.js and Turbo need node
+RUN apk add --no-cache nodejs
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
@@ -26,10 +28,11 @@ COPY . .
 # Uncomment the following line in case you want to disable telemetry during the build.
 # ENV NEXT_TELEMETRY_DISABLED 1
 
-RUN bun run build --filter=web
+RUN bun x turbo build --filter=web
 
 # Production image, copy all the files and run next
 FROM base AS runner
+RUN apk add --no-cache nodejs
 WORKDIR /app
 
 ENV NODE_ENV=production

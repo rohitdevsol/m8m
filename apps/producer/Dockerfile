@@ -12,10 +12,11 @@ RUN bun install
 
 # Build
 FROM base AS builder
+RUN apk add --no-cache nodejs
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-RUN bun run build --filter=producer
+RUN bun x turbo build --filter=producer
 
 # Runner
 FROM base AS runner

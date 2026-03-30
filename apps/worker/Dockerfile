@@ -14,10 +14,12 @@ RUN bun install
 
 # Build
 FROM base AS builder
+RUN apk add --no-cache nodejs
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 # We don't need to rebuild for simple Bun apps that run from index.ts, but standard practice in Turbo is to build
+RUN bun x turbo build --filter=worker
 # For now, let's keep it simple
 
 # Runner
