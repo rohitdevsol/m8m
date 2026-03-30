@@ -4,7 +4,9 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "worker:dev": "bun index.ts"
+    "dev": "bun index.ts",
+    "build": "echo 'no build needed'",
+    "start": "bun index.ts"
   },
   "devDependencies": {
     "@types/bun": "latest",

@@ -1,4 +1,4 @@
-FROM oven/bun:1.1.20-alpine AS base
+FROM oven/bun:alpine AS base
 
 # Install dependencies
 FROM base AS deps
@@ -21,4 +21,4 @@ RUN bun run build --filter=producer
 FROM base AS runner
 WORKDIR /app
 COPY --from=builder /app ./
-CMD ["bun", "run", "start", "--filter=producer"]
+CMD ["bun", "run", "apps/producer/index.ts"]
