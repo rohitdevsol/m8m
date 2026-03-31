@@ -1,24 +1,30 @@
-FROM oven/bun:alpine AS base
+# Node 22 slim for full glibc compatibility, Prisma, and Next.js support.
+FROM node:22-slim AS base
+# Install Bun, Turbo, and Dotenv-CLI globally
+RUN npm install -g bun turbo dotenv-cli
+# Install OpenSSL and Git which Prisma/Turbo sometimes need 
+RUN apt-get update -y && apt-get install -y openssl git
 
-# Install dependencies
-FROM base AS deps
 WORKDIR /app
-COPY package.json bun.lock ./
-COPY apps/producer/package.json ./apps/producer/
-COPY packages/database/package.json ./packages/database/
-COPY packages/kafka/package.json ./packages/kafka/
-# Add other packages as needed
-RUN bun install 
 
-# Build
-FROM base AS builder
-WORKDIR /app
-COPY --from=deps /app/node_modules ./node_modules
+# Copy all files at once
 COPY . .
+
+# Install dependencies using bun
+RUN bun install
+
+# Build the specific app 
+ENV NODE_ENV=production
 RUN bun run build --filter=producer
 
-# Runner
-FROM base AS runner
+# Runner stage
+FROM node:22-slim AS runner
+RUN npm install -g bun
+RUN apt-get update -y && apt-get install -y openssl
+
 WORKDIR /app
-COPY --from=builder /app ./
+
+# Copy the entire built structure from base
+COPY --from=base /app ./
+
 CMD ["bun", "run", "apps/producer/index.ts"]
