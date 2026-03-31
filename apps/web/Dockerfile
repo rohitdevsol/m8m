@@ -13,6 +13,9 @@ COPY . .
 # Install dependencies using bun
 RUN bun install
 
+# Provide a dummy database URL so Prisma can parse the schema during build
+ENV DATABASE_URL="postgresql://dummy:dummy@localhost:5432/dummy"
+
 # Build the app 
 ENV NODE_ENV=production
 RUN bun run build --filter=web
