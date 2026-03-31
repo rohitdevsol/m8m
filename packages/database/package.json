@@ -19,6 +19,7 @@
     "db:studio": "prisma studio"
   },
   "dependencies": {
+    "@prisma/adapter-pg": "latest",
     "@prisma/client": "latest",
     "@prisma/client-runtime-utils": "7.2.0",
     "dotenv": "^17.2.3",
