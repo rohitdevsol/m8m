@@ -13,8 +13,10 @@ COPY . .
 # Install dependencies using bun
 RUN bun install
 
-# Provide a dummy database URL so Prisma can parse the schema during build
+# Provide dummy environment variables so Prisma and Next.js can build without missing-secret errors
 ENV DATABASE_URL="postgresql://dummy:dummy@localhost:5432/dummy"
+ENV ENCRYPTION_KEY="dummy-encryption-key-for-build-only"
+ENV BETTER_AUTH_SECRET="dummy-auth-secret-for-build-only"
 
 # Build the app 
 ENV NODE_ENV=production
