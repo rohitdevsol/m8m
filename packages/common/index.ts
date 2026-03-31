@@ -20,6 +20,7 @@ export function snapshotWorkflow(nodes: Node[], connections: Connection[]) {
       position: n.position,
       data: n.data,
     })),
+    
     connections: connections.map((c) => ({
       id: c.id,
       fromNodeId: c.fromNodeId,
