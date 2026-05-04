@@ -15,5 +15,8 @@
   },
   "peerDependencies": {
     "typescript": "^5"
+  },
+  "dependencies": {
+    "dotenv": "^17.2.3"
   }
 }
