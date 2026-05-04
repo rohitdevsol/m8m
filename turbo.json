@@ -25,7 +25,6 @@
         "AUTH_GITHUB_CLIENT_SECRET",
         "GOOGLE_CLIENT_ID",
         "GOOGLE_CLIENT_SECRET",
-        "GEMINI_API_KEY",
       ]
     },
     "dev:all": {
@@ -123,7 +122,6 @@
       "persistent": true,
       "env": [
         "DATABASE_URL",
-        "GEMINI_API_KEY",
         "ENCRYPTION_KEY"
       ]
     },

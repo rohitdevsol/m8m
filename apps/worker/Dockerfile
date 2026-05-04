@@ -1,33 +1,33 @@
-# Node 22 slim for full glibc compatibility, Prisma, and Next.js support.
-FROM node:22-slim AS base
-# Install Bun, Turbo, and Dotenv-CLI globally
-RUN npm install -g bun turbo dotenv-cli
-# Install OpenSSL and Git which Prisma/Turbo sometimes need 
-RUN apt-get update -y && apt-get install -y openssl git
+# ── Stage 1: Prune the monorepo to only worker + its deps ──
+FROM node:22-slim AS pruner
+RUN npm install -g turbo
+WORKDIR /app
+COPY . .
+RUN turbo prune worker --docker
 
+# ── Stage 2: Install deps & generate Prisma client ──
+FROM node:22-slim AS installer
+RUN npm install -g bun
+RUN apt-get update -y && apt-get install -y openssl && rm -rf /var/lib/apt/lists/*
 WORKDIR /app
 
-# Copy all files at once
-COPY . .
-
-# Install dependencies using bun
+# Copy pruned lockfile + package.jsons first (cache-friendly)
+COPY --from=pruner /app/out/json/ .
 RUN bun install
 
-# Provide a dummy database URL so Prisma can parse the schema during build
+# Copy pruned source code
+COPY --from=pruner /app/out/full/ .
+
+# Generate Prisma client
 ENV DATABASE_URL="postgresql://dummy:dummy@localhost:5432/dummy"
+RUN cd packages/database && bunx prisma generate
 
-# Build the specific app 
-ENV NODE_ENV=production
-RUN bun run build --filter=worker
-
-# Runner stage
+# ── Stage 3: Slim runtime ──
 FROM node:22-slim AS runner
 RUN npm install -g bun
-RUN apt-get update -y && apt-get install -y openssl
-
+RUN apt-get update -y && apt-get install -y openssl && rm -rf /var/lib/apt/lists/*
 WORKDIR /app
 
-# Copy the entire built structure from base
-COPY --from=base /app ./
+COPY --from=installer /app .
 
 CMD ["bun", "run", "apps/worker/index.ts"]

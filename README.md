@@ -152,12 +152,7 @@ BETTERAUTH_URL="http://localhost:3000"
 KAFKA_BROKERS="localhost:9092"
 KAFKA_CLIENT_ID="m8m-worker"
 
-# Optional: External Services
-SLACK_CLIENT_ID=""
-SLACK_CLIENT_SECRET=""
-DISCORD_CLIENT_ID=""
-DISCORD_CLIENT_SECRET=""
-GEMINI_API_KEY=""
+
 ```
 
 4. **Start infrastructure services**
@@ -363,7 +358,7 @@ Connect to external services:
 | `SLACK_CLIENT_SECRET`   | Slack OAuth client secret    | No       |
 | `DISCORD_CLIENT_ID`     | Discord OAuth client ID      | No       |
 | `DISCORD_CLIENT_SECRET` | Discord OAuth client secret  | No       |
-| `GEMINI_API_KEY`        | Google Gemini API key        | No       |
+
 
 ### Database Configuration
 

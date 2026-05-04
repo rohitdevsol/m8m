@@ -1,0 +1,10 @@
+node_modules
+.next
+.turbo
+.git
+.DS_Store
+*.md
+.env
+.env.*
+!.env.example
+apps/web/.next
