@@ -16,6 +16,7 @@
     "db:migrate:reset": "dotenv -- turbo run db:migrate:reset",
     "worker:dev": "dotenv -- turbo run worker:dev",
     "producer:dev": "dotenv -- turbo run producer:dev",
+    "web:dev": "dotenv -- turbo run dev --filter=web --parallel",
     "db:studio": "dotenv -- turbo run db:studio",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "lint": "turbo run lint"
