@@ -133,7 +133,7 @@ const AppSidebar = () => {
               }}
             >
               <LogOutIcon className="h-10 w-10 stroke-red-500" />
-              <span className="text-red-500 text-lg">Sign out</span>
+              <span className="text-red-500 text-md">Sign out</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>

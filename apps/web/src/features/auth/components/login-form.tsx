@@ -68,7 +68,7 @@ export default function LoginForm() {
 
   return (
     <div className="flex flex-col gap-6">
-      <Card>
+      <Card className="border-0 shadow-xl">
         <CardHeader className="text-center">
           <CardTitle className="text-2xl font-bold tracking-tight">
             Welcome back

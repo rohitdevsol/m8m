@@ -6,7 +6,7 @@ import { toast } from "sonner";
 export const SocialButtons = ({ isPending }: { isPending: boolean }) => {
   const handleGithub = async () => {
     await authClient.signIn.social(
-      { provider: "github" },
+      { provider: "github", callbackURL: "/workflows" },
       {
         onSuccess: () => {},
         onError: (error: any) => {
@@ -19,12 +19,9 @@ export const SocialButtons = ({ isPending }: { isPending: boolean }) => {
 
   const handleGoogle = async () => {
     await authClient.signIn.social(
-      {
-        provider: "google",
-      },
+      { provider: "google", callbackURL: "/workflows" },
       {
         onSuccess: () => {},
-
         onError: (error: any) => {
           console.log(error);
           toast.error("Something went wrong ", error);

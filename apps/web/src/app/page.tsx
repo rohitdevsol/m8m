@@ -1,406 +1,205 @@
 "use client";
 
 import React from "react";
-import { motion, useScroll, useTransform, useMotionTemplate, useMotionValue } from "framer-motion";
+import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, Github, Code2, Database, Zap, Bot, Layers, Command, ChevronRight } from "lucide-react";
-import { ModeToggle } from "@/components/mode-toggle";
+import "./landing.css";
 
-// Utility for glowing tracing beams
-const AnimatedBeams = () => {
-  return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none -z-10">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(56,189,248,0.03)_0%,transparent_100%)]" />
-      <svg className="absolute w-full h-full opacity-40 mix-blend-screen" preserveAspectRatio="none">
-        <defs>
-          <linearGradient id="beam1" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#38bdf8" stopOpacity="0" />
-            <stop offset="50%" stopColor="#818cf8" stopOpacity="0.8" />
-            <stop offset="100%" stopColor="#c084fc" stopOpacity="0" />
-          </linearGradient>
-          <linearGradient id="beam2" x1="100%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stopColor="#c084fc" stopOpacity="0" />
-            <stop offset="50%" stopColor="#38bdf8" stopOpacity="0.8" />
-            <stop offset="100%" stopColor="#818cf8" stopOpacity="0" />
-          </linearGradient>
-        </defs>
-        
-        {/* Animated paths creating a futuristic grid/network feel */}
-        <motion.path
-          d="M 100,-100 Q 400,300 1200,800"
-          stroke="url(#beam1)"
-          strokeWidth="1.5"
-          fill="none"
-          initial={{ pathLength: 0, opacity: 0 }}
-          animate={{ pathLength: 1, opacity: 1 }}
-          transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", repeatType: "reverse" }}
-        />
-        <motion.path
-          d="M -200,200 C 300,400 600,100 1400,600"
-          stroke="url(#beam2)"
-          strokeWidth="1.5"
-          fill="none"
-          initial={{ pathLength: 0, opacity: 0 }}
-          animate={{ pathLength: 1, opacity: 1 }}
-          transition={{ duration: 7, delay: 1, repeat: Infinity, ease: "easeInOut", repeatType: "reverse" }}
-        />
-        <motion.path
-          d="M 200,900 C 500,600 800,900 1100,200"
-          stroke="url(#beam1)"
-          strokeWidth="1"
-          fill="none"
-          initial={{ pathLength: 0, opacity: 0 }}
-          animate={{ pathLength: 1, opacity: 0.5 }}
-          transition={{ duration: 6, delay: 2, repeat: Infinity, ease: "easeInOut", repeatType: "reverse" }}
-        />
-      </svg>
-      {/* Moving gradient orb */}
-      <motion.div 
-        animate={{ 
-          x: [0, 100, -50, 0],
-          y: [0, -100, 50, 0]
-        }}
-        transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-        className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-indigo-500/10 rounded-full blur-[120px]"
-      />
-      <motion.div 
-        animate={{ 
-          x: [0, -150, 50, 0],
-          y: [0, 150, -50, 0]
-        }}
-        transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-        className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] bg-cyan-500/10 rounded-full blur-[150px]"
-      />
-    </div>
-  );
-};
+const ease = [0.22, 1, 0.36, 1] as const;
+const fadeUp = (delay = 0) => ({
+  initial: { opacity: 0, y: 24 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.8, delay, ease },
+});
+const fadeIn = (delay = 0) => ({
+  initial: { opacity: 0 },
+  whileInView: { opacity: 1 },
+  viewport: { once: true } as const,
+  transition: { duration: 0.7, delay },
+});
 
-// Aceternity style glowing card
-const GlowCard = ({ children, className }: { children: React.ReactNode, className?: string }) => {
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-
-  function handleMouseMove({ currentTarget, clientX, clientY }: React.MouseEvent) {
-    const { left, top } = currentTarget.getBoundingClientRect();
-    mouseX.set(clientX - left);
-    mouseY.set(clientY - top);
-  }
-
-  return (
-    <div
-      className={`group relative rounded-2xl border border-border bg-card/80 backdrop-blur-sm overflow-hidden ${className || ''}`}
-      onMouseMove={handleMouseMove}
-    >
-      <motion.div
-        className="pointer-events-none absolute -inset-px rounded-2xl opacity-0 transition duration-300 group-hover:opacity-100"
-        style={{
-          background: useMotionTemplate`
-            radial-gradient(
-              400px circle at ${mouseX}px ${mouseY}px,
-              rgba(56, 189, 248, 0.1),
-              transparent 80%
-            )
-          `,
-        }}
-      />
-      <motion.div
-        className="pointer-events-none absolute -inset-px rounded-2xl opacity-0 transition duration-300 group-hover:opacity-100"
-        style={{
-          border: '1px solid',
-          borderImageSource: useMotionTemplate`
-            radial-gradient(
-              150px circle at ${mouseX}px ${mouseY}px,
-              rgba(56, 189, 248, 0.5),
-              transparent 100%
-            )
-          `,
-          borderImageSlice: 1,
-        }}
-      />
-      <div className="relative z-10 p-8 h-full">
-        {children}
-      </div>
-    </div>
-  );
-};
+const features = [
+  { title: "Visual Canvas", desc: "Build complex DAGs on a drag-and-drop canvas with intelligent edge routing and real-time validation.", icon: "coral",
+    svg: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/><path d="M10 6.5h4M6.5 10v4M17.5 10v4"/></svg> },
+  { title: "Kafka Engine", desc: "Enterprise message streaming with zero lost events, parallel execution, and automatic retries.", icon: "sage",
+    svg: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg> },
+  { title: "AI Integration", desc: "Embed Gemini, OpenAI, or Anthropic directly into flows with semantic branching and auto-parsing.", icon: "coral",
+    svg: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><circle cx="12" cy="12" r="3"/><path d="M12 1v4m0 14v4M4.22 4.22l2.83 2.83m9.9 9.9l2.83 2.83M1 12h4m14 0h4M4.22 19.78l2.83-2.83m9.9-9.9l2.83-2.83"/></svg> },
+  { title: "Secure Vault", desc: "Encrypted credential storage with fine-grained access control. Share keys across workflows safely.", icon: "navy",
+    svg: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg> },
+  { title: "Live Monitoring", desc: "Real-time execution dashboards. Trace data through nodes, inspect logs, replay failed runs.", icon: "sage",
+    svg: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M18 20V10M12 20V4M6 20v-6"/><rect x="2" y="2" width="20" height="20" rx="3"/></svg> },
+  { title: "Multi-Channel", desc: "Slack, Discord, Telegram, custom webhooks. Trigger workflows from anywhere, deliver everywhere.", icon: "coral",
+    svg: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg> },
+];
 
 export default function Home() {
-  const { scrollYProgress } = useScroll();
-  const y = useTransform(scrollYProgress, [0, 1], [0, -100]);
-  const opacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
-
   return (
-    <div className="min-h-screen bg-background text-foreground selection:bg-cyan-500/30">
-      <AnimatedBeams />
+    <div className="lp">
+      <div className="lp-mesh" />
 
-      {/* Modern minimal Navigation */}
-      <nav className="fixed top-0 inset-x-0 z-50 border-b border-neutral-800/50 bg-background/70 backdrop-blur-xl">
-        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-2 group cursor-pointer">
-            <Link
-          href={"/"}
-          className="flex items-center justify-center gap-3 self-center font-medium text-lg"
-        >
-          <Image src="/logo.svg" alt="logo" width={40} height={40} />
-          m8m
-        </Link>
-          </div>
-          <div className="hidden md:flex items-center gap-8 text-sm font-medium text-muted-foreground">
-            <Link href="#features" className="hover:text-foreground transition-colors">Features</Link>
-            <Link href="https://docs.m8m.dev" className="hover:text-foreground transition-colors">Documentation</Link>
-            <Link href="https://github.com/rohitdevsol/m8m" className="hover:text-foreground transition-colors flex items-center gap-2">
-              <Github className="w-4 h-4" /> Source
+      {/* NAV */}
+      <nav className="lp-nav">
+        <div className="lp-nav-inner">
+          <Link href="/" className="lp-brand">
+            <Image src="/logo.svg" alt="m8m" width={28} height={28} />
+            m8m
+          </Link>
+          <div className="lp-nav-center">
+            <Link href="#features" className="lp-nav-link">Features</Link>
+            <Link href="https://github.com/rohitdevsol/m8m" className="lp-nav-link" target="_blank" rel="noopener">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.5 11.5 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+              GitHub
             </Link>
-            {/* <ModeToggle/> */}
           </div>
-          <div className="flex items-center gap-4">
-            <Link href="/login" className="text-sm font-medium hover:text-foreground transition-colors">
-              Log in
-            </Link>
-            <Link href="/signup" className="hidden md:flex relative group overflow-hidden rounded-full bg-primary px-5 py-2 text-sm font-medium text-primary-foreground">
-              <span className="relative z-10 flex items-center gap-2">
-                Get Started
-                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-              </span>
-              <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-background/20 to-transparent group-hover:translate-x-0 transition-transform duration-300 ease-out" />
+          <div className="lp-nav-right">
+            <Link href="/login" className="lp-btn-ghost" id="nav-login">Log in</Link>
+            <Link href="/signup" className="lp-btn-fill" id="nav-signup">
+              Get Started
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
             </Link>
           </div>
         </div>
       </nav>
 
-      <main className="relative">
-        {/* Hero Section */}
-        <section className="relative pt-40 pb-32 md:pt-52 md:pb-40 px-6 max-w-7xl mx-auto flex flex-col items-center text-center">
-          <motion.div 
-            style={{ y, opacity }}
-            className="flex flex-col items-center"
-          >
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
-              className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-muted/50 border border-border text-foreground/80 text-xs font-mono mb-8 backdrop-blur-sm shadow-sm"
-            >
-              <div className="w-2 h-2 rounded-full bg-cyan-500 animate-pulse shadow-[0_0_10px_rgba(6,182,212,0.5)]" />
-              M8M ENGINE v1.0 ONLINE
-            </motion.div>
-            
-            <motion.h1 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
-              className="text-5xl md:text-8xl font-display font-bold tracking-tighter mb-8 leading-[1.05] max-w-5xl"
-            >
-              Your workflows aren't linear.
-              <br/>
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-muted-foreground via-foreground to-muted-foreground">
-                Your engine shouldn't be either.
-              </span>
-            </motion.h1>
-            
-            <motion.p 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-              className="text-lg md:text-xl text-muted-foreground mb-12 max-w-2xl font-light leading-relaxed"
-            >
-              A completely open-source, ultra-minimal workflow automation platform. 
-              Built with precision to process data routing seamlessly without a single line of code.
-            </motion.p>
-            
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
-              className="flex items-center gap-6"
-            >
-              <Link href="/register" className="relative group overflow-hidden rounded-full bg-foreground px-8 py-4 text-base font-semibold text-background shadow-lg">
-                <span className="relative z-10 flex items-center gap-2">
-                  Launch App
-                </span>
-                <div className="absolute inset-0 bg-primary/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out" />
-              </Link>
-              <div className="h-10 w-px bg-border" />
-              <Link href="#preview" className="text-muted-foreground hover:text-foreground flex items-center gap-2 text-sm font-medium transition-colors">
-                <Command className="w-4 h-4" /> View Architecture
-              </Link>
-            </motion.div>
+      {/* HERO */}
+      <section className="lp-hero">
+        <div className="lp-hero-content">
+          <motion.div className="lp-hero-pill" {...fadeUp(0)}>
+            <span className="lp-hero-pill-dot" />
+            Open Source · Free Forever
           </motion.div>
-        </section>
 
-        {/* Visual Abstract Asset Hero Display */}
-        <section id="preview" className="relative py-12 px-6 max-w-[1400px] mx-auto">
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.95, y: 40 }}
-            whileInView={{ opacity: 1, scale: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-            className="relative w-full aspect-[21/9] md:aspect-[3/1] rounded-3xl border border-neutral-800 bg-neutral-950 overflow-hidden shadow-2xl"
-          >
-            {/* Inner glow */}
-            <div className="absolute inset-0 shadow-[inset_0_0_60px_rgba(0,0,0,0.1)] dark:shadow-[inset_0_0_100px_rgba(0,0,0,0.8)] z-10 pointer-events-none" />
-            <Image 
-              src="/abstract-flow.png" 
-              alt="M8M Abstract Node Flow" 
-              fill 
-              className="object-cover opacity-80 mix-blend-multiply dark:mix-blend-screen scale-105 hover:scale-100 transition-transform duration-[20s] ease-linear"
+          <motion.h1 className="lp-hero-h1" {...fadeUp(0.12)}>
+            Your workflows,
+            <br />
+            <em>automated.</em>
+          </motion.h1>
+
+          <motion.p className="lp-hero-sub" {...fadeUp(0.24)}>
+            Connect APIs, AI models, and services into powerful pipelines
+            with a visual builder. No code. No limits.
+          </motion.p>
+
+          <motion.div className="lp-hero-ctas" {...fadeUp(0.36)}>
+            <Link href="/login" className="lp-btn-lg secondary" id="hero-login">Log in</Link>
+            <Link href="/signup" className="lp-btn-lg primary" id="hero-signup">
+              Start Building
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </Link>
+          </motion.div>
+
+          <motion.div className="lp-hero-social" {...fadeUp(0.48)}>
+            <div className="lp-hero-avatars">
+              <span /><span /><span /><span />
+            </div>
+            Trusted by developers worldwide
+          </motion.div>
+        </div>
+
+        <motion.div className="lp-hero-visual"
+          initial={{ opacity: 0, scale: 0.92, y: 30 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          transition={{ duration: 1, delay: 0.3, ease }}
+        >
+          <div className="lp-hero-img-glow" />
+          <div className="lp-hero-img-wrap">
+            <Image
+              src="/hero-illustration.png"
+              alt="Workflow automation illustration"
+              fill
+              style={{ objectFit: "cover" }}
+              priority
             />
-            
-            {/* Floating UI Elements over image */}
-            <div className="absolute top-8 left-8 z-20 hidden md:block">
-               <div className="bg-card/70 backdrop-blur-md border border-border p-4 rounded-xl shadow-lg opacity-90 hover:opacity-100 transition-opacity">
-                 <div className="flex items-center gap-2 mb-3">
-                   <div className="w-2 h-2 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.5)]" />
-                   <span className="text-xs font-mono text-muted-foreground font-semibold">ROUTER_NODE_ACTIVE</span>
-                 </div>
-                 <div className="space-y-2">
-                   <div className="h-1 w-32 bg-muted rounded-full overflow-hidden">
-                     <motion.div className="h-full bg-cyan-500" initial={{ width: "0%" }} whileInView={{ width: "80%" }} transition={{ duration: 1.5, delay: 0.5 }} />
-                   </div>
-                   <div className="h-1 w-24 bg-muted rounded-full overflow-hidden">
-                     <motion.div className="h-full bg-purple-500" initial={{ width: "0%" }} whileInView={{ width: "65%" }} transition={{ duration: 1.5, delay: 0.7 }} />
-                   </div>
-                 </div>
-               </div>
-            </div>
-            
-            <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-background to-transparent z-10" />
-          </motion.div>
-        </section>
-
-        {/* Feature Bento Grid */}
-        <section id="features" className="py-32 px-6 max-w-7xl mx-auto relative">
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[800px] aspect-square bg-[radial-gradient(circle_at_center,rgba(56,189,248,0.05)_0%,transparent_70%)] pointer-events-none" />
-          
-          <div className="mb-20">
-            <h2 className="text-3xl md:text-5xl font-display font-bold tracking-tighter mb-4">Precision engineered.</h2>
-            <p className="text-muted-foreground text-lg max-w-xl">Every component in m8m is designed directly for speed, visual clarity, and raw execution power.</p>
           </div>
+        </motion.div>
+      </section>
 
-          <div className="grid md:grid-cols-3 gap-6">
-            <GlowCard className="md:col-span-2">
-              <div className="flex flex-col h-full justify-between">
-                <div>
-                  <Layers className="w-8 h-8 text-cyan-500 md:mb-6" />
-                  <h3 className="text-2xl font-display font-bold mb-3 tracking-tight">Visual canvas paradigm</h3>
-                  <p className="text-muted-foreground leading-relaxed max-w-md">
-                    Connect complex services visually without degrading to spaghetti code. The canvas snaps, aligns, and routes edges naturally as you build.
-                  </p>
-                </div>
-                <div className="mt-12 group-hover:translate-x-2 transition-transform duration-300 flex items-center text-sm font-medium text-cyan-500">
-                  Explore Builder <ChevronRight className="w-4 h-4 ml-1" />
-                </div>
-              </div>
-            </GlowCard>
+      {/* LOGOS */}
+      <motion.section className="lp-logos" {...fadeIn(0)}>
+        <span className="lp-logos-label">Integrations you already use</span>
+        <div className="lp-logos-row">
+          <Image src="/slack.svg" alt="Slack" width={80} height={22} />
+          <Image src="/discord.svg" alt="Discord" width={80} height={22} />
+          <Image src="/openai.svg" alt="OpenAI" width={80} height={22} />
+          <Image src="/gemini-color.svg" alt="Gemini" width={80} height={22} />
+          <Image src="/anthropic.svg" alt="Anthropic" width={80} height={22} />
+          <Image src="/stripe.svg" alt="Stripe" width={60} height={22} />
+          <Image src="/github.svg" alt="GitHub" width={80} height={22} />
+        </div>
+      </motion.section>
 
-            <GlowCard className="col-span-1">
-              <div className="relative h-full flex flex-col justify-between">
-                <Database className="w-8 h-8 text-purple-500 mb-6" />
-                <div>
-                  <h3 className="text-xl font-display font-bold mb-3 tracking-tight">Kafka backed engine</h3>
-                  <p className="text-muted-foreground text-sm leading-relaxed">
-                    Zero lost events. High throughput parallelism backed by enterprise queue streaming.
-                  </p>
-                </div>
-              </div>
-            </GlowCard>
+      {/* FEATURES */}
+      <section className="lp-features" id="features">
+        <motion.span className="lp-section-label" {...fadeIn(0)}>CAPABILITIES</motion.span>
+        <motion.h2 className="lp-section-heading" {...fadeIn(0.05)}>
+          Everything to ship
+          <br />
+          <em>faster.</em>
+        </motion.h2>
+        <motion.p className="lp-section-sub" {...fadeIn(0.1)}>
+          Every component engineered for speed, reliability, and developer experience.
+        </motion.p>
 
-            <div className="md:col-span-3 grid md:grid-cols-2 gap-6 h-full mt-6">
-              <GlowCard className="flex flex-col min-h-[400px]">
-                <Bot className="w-8 h-8 text-muted-foreground mb-6" />
-                <h3 className="text-2xl font-display font-bold mb-3 tracking-tight">Symbiotic AI integration</h3>
-                <p className="text-muted-foreground">
-                  Embed LLMs natively into the flow. Parse unstructed payloads automatically and branch dynamically based on semantic value.
-                </p>
-                
-                {/* SVG Route Animation Illustration */}
-                <div className="mt-auto relative w-full h-40 border border-border rounded-xl bg-muted/20 overflow-hidden flex items-center justify-center">
-                   <svg className="w-full h-full" viewBox="0 0 400 200">
-                     <motion.path 
-                       d="M 50 100 L 150 100 L 250 50 L 350 50" 
-                       stroke="currentColor" strokeOpacity="0.1" strokeWidth="2" fill="none"
-                     />
-                     <motion.path 
-                       d="M 150 100 L 250 150 L 350 150" 
-                       stroke="currentColor" strokeOpacity="0.1" strokeWidth="2" fill="none"
-                     />
-                     
-                     <motion.path 
-                       d="M 50 100 L 150 100 L 250 50 L 350 50" 
-                       stroke="#0ea5e9" strokeWidth="2" fill="none" strokeDasharray="5 5"
-                       initial={{ strokeDashoffset: 100 }}
-                       animate={{ strokeDashoffset: 0 }}
-                       transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-                     />
-                     <motion.path 
-                       d="M 150 100 L 250 150 L 350 150" 
-                       stroke="#a855f7" strokeWidth="2" fill="none" strokeDasharray="5 5"
-                       initial={{ strokeDashoffset: 100 }}
-                       animate={{ strokeDashoffset: 0 }}
-                       transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-                     />
-                     <circle cx="50" cy="100" r="4" fill="currentColor" opacity="0.5" />
-                     <circle cx="150" cy="100" r="6" fill="currentColor" opacity="0.5" className="animate-pulse" />
-                     <circle cx="250" cy="50" r="4" fill="#0ea5e9" />
-                     <circle cx="250" cy="150" r="4" fill="#a855f7" />
-                   </svg>
-                </div>
-              </GlowCard>
+        <div className="lp-feature-grid">
+          {features.map((f, i) => (
+            <motion.div key={i} className="lp-fcard"
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: i * 0.08, ease }}
+            >
+              <div className={`lp-fcard-icon ${f.icon}`}>{f.svg}</div>
+              <h3 className="lp-fcard-title">{f.title}</h3>
+              <p className="lp-fcard-desc">{f.desc}</p>
+              <div className="lp-fcard-shine" />
+            </motion.div>
+          ))}
+        </div>
+      </section>
 
-              <div className="relative group rounded-2xl border border-border overflow-hidden min-h-[400px]">
-                {/* Image background for Core */}
-                <Image 
-                  src="/abstract-core.png" 
-                  alt="Abstract Engine Core" 
-                  fill 
-                  className="object-cover opacity-60 scale-105 group-hover:scale-100 transition-transform duration-1000 mix-blend-multiply dark:mix-blend-screen"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent" />
-                <div className="absolute inset-0 flex flex-col justify-end p-8 z-10">
-                  <Zap className="w-8 h-8 text-primary mb-6" />
-                  <h3 className="text-2xl font-display font-bold mb-3 tracking-tight text-foreground">Universal Connectivity</h3>
-                  <p className="text-muted-foreground">
-                    If it has an API, it can be connected. Dispatch webhooks, query databases, or post into slack instantly.
-                  </p>
-                </div>
-              </div>
-            </div>
+      {/* CTA */}
+      <section className="lp-cta">
+        <motion.div className="lp-cta-box"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, ease }}
+        >
+          <h2 className="lp-cta-heading">
+            Stop writing
+            <br />
+            <em>boilerplate.</em>
+          </h2>
+          <p className="lp-cta-sub">Free, open-source, and built for teams that ship.</p>
+          <div className="lp-cta-buttons">
+            <Link href="/login" className="lp-btn-lg on-dark secondary" id="cta-login">Log in</Link>
+            <Link href="/signup" className="lp-btn-lg primary" id="cta-signup">
+              Get Started Free
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </Link>
           </div>
-        </section>
-
-        {/* Global CTA */}
-        <section className="py-32 px-6 relative border-t border-border">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom,rgba(56,189,248,0.05)_0%,transparent_60%)] pointer-events-none" />
-          <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-4xl md:text-6xl font-display font-bold tracking-tighter mb-8">Stop writing boilerplate.</h2>
-            <p className="text-xl text-muted-foreground mb-12 max-w-2xl mx-auto font-light">
-              m8m is free, open-source, and ready to deploy. Take control of your background jobs and data pipelines today.
-            </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link href="https://github.com/rohitdevsol/m8m" className="flex items-center gap-2 bg-foreground text-background px-8 py-4 rounded-full text-base font-semibold hover:bg-muted-foreground transition-colors shadow-lg">
-                <Code2 className="w-5 h-5" />
-                Initialize Project
-              </Link>
-            </div>
-            <div className="mt-12 flex justify-center divide-x divide-border text-sm text-muted-foreground font-mono">
-              <div className="px-6">MIT LINKED</div>
-              <div className="px-6">TS NATIVE</div>
-              <div className="px-6">NODE RUNTIME</div>
-            </div>
+          <div className="lp-cta-badges">
+            <span>MIT LICENSE</span>
+            <span>SELF-HOSTABLE</span>
+            <span>TYPESCRIPT NATIVE</span>
           </div>
-        </section>
-      </main>
+        </motion.div>
+      </section>
 
-      <footer className="border-t border-border py-12 bg-card">
-        <div className="max-w-7xl mx-auto px-6 flex justify-between items-center text-sm text-muted-foreground">
-          <div className="flex items-center gap-2 font-semibold">
-            <span className="text-foreground text-lg">m8m</span>  © {new Date().getFullYear()}
+      {/* FOOTER */}
+      <footer className="lp-footer">
+        <div className="lp-footer-inner">
+          <div className="lp-footer-left">
+            <Image src="/logo.svg" alt="m8m" width={20} height={20} />
+            <span>m8m</span>
+            <span className="lp-footer-copy">© {new Date().getFullYear()}</span>
           </div>
-          <div className="flex gap-6">
-            <Link href="https://github.com" className="hover:text-foreground transition-colors">GitHub</Link>
-            <Link href="https://twitter.com" className="hover:text-foreground transition-colors">Twitter</Link>
-            <Link href="https://discord.com" className="hover:text-foreground transition-colors">Discord</Link>
+          <div className="lp-footer-links">
+            <Link href="https://github.com/rohitdevsol/m8m" target="_blank" rel="noopener">GitHub</Link>
+            <Link href="https://twitter.com" target="_blank" rel="noopener">Twitter</Link>
+            <Link href="https://discord.com" target="_blank" rel="noopener">Discord</Link>
           </div>
         </div>
       </footer>
