@@ -92,7 +92,10 @@ export default function Home() {
 
           <motion.div className="lp-hero-social" {...fadeUp(0.48)}>
             <div className="lp-hero-avatars">
-              <span /><span /><span /><span />
+              <Image src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=64&h=64" alt="avatar" width={28} height={28} />
+              <Image src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=64&h=64" alt="avatar" width={28} height={28} />
+              <Image src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=64&h=64" alt="avatar" width={28} height={28} />
+              <Image src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=64&h=64" alt="avatar" width={28} height={28} />
             </div>
             Trusted by developers worldwide
           </motion.div>
@@ -120,15 +123,101 @@ export default function Home() {
       <motion.section className="lp-logos" {...fadeIn(0)}>
         <span className="lp-logos-label">Integrations you already use</span>
         <div className="lp-logos-row">
+          <Image src="/telegram.svg" alt="Telegram" width={80} height={22} />
           <Image src="/slack.svg" alt="Slack" width={80} height={22} />
           <Image src="/discord.svg" alt="Discord" width={80} height={22} />
           <Image src="/openai.svg" alt="OpenAI" width={80} height={22} />
           <Image src="/gemini-color.svg" alt="Gemini" width={80} height={22} />
+           <Image src="/grok.svg" alt="grok" width={80} height={22} />
           <Image src="/anthropic.svg" alt="Anthropic" width={80} height={22} />
           <Image src="/stripe.svg" alt="Stripe" width={60} height={22} />
-          <Image src="/github.svg" alt="GitHub" width={80} height={22} />
+           <Image src="/googleform.svg" alt="Google Form" width={80} height={22} />
+          {/* <Image src="/github.svg" alt="GitHub" width={80} height={22} /> */}
         </div>
       </motion.section>
+
+      {/* SHOWCASE SECTION */}
+      <section className="lp-showcase">
+        {/* Showcase Row 1: Data Extraction */}
+        <div className="lp-showcase-row">
+          <div className="lp-showcase-content">
+            <span className="lp-showcase-number">01</span>
+            <span className="lp-showcase-label">Data Extraction</span>
+            <motion.h2 className="lp-showcase-heading" {...fadeIn(0)}>
+              Parse the <br /><em>unparsable.</em>
+            </motion.h2>
+            <motion.p className="lp-showcase-desc" {...fadeIn(0.1)}>
+              Extract structured JSON from any unstructured source. Receipts, emails, or 100-page PDFs—M8M transforms raw data into actionable insights instantly.
+            </motion.p>
+            <Link href="/signup" className="lp-nav-link" style={{ color: 'var(--coral)', display: 'inline-flex', fontSize: '1rem' }}>Explore Data Nodes <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></Link>
+          </div>
+          <motion.div className="lp-showcase-visual" {...fadeUp(0.2)}>
+            <div className="lp-showcase-img-wrap">
+              <Image src="/landing/dataextraction.png" alt="Data extraction visualization" fill sizes="(max-width: 900px) 100vw, 50vw" />
+            </div>
+          </motion.div>
+        </div>
+
+        {/* Showcase Row 2: Chatbots / AI */}
+        <div className="lp-showcase-row reverse">
+          <div className="lp-showcase-content">
+            <span className="lp-showcase-number">02</span>
+            <span className="lp-showcase-label">AI Automation</span>
+            <motion.h2 className="lp-showcase-heading" {...fadeIn(0)}>
+              Intelligent <br /><em>agents.</em>
+            </motion.h2>
+            <motion.p className="lp-showcase-desc" {...fadeIn(0.1)}>
+              Deploy autonomous chatbots and AI workflows that reason. Integrate Gemini, OpenAI, and Anthropic seamlessly to build systems that think and act on your behalf.
+            </motion.p>
+            <Link href="/signup" className="lp-nav-link" style={{ color: 'var(--sage)', display: 'inline-flex', fontSize: '1rem' }}>Meet AI Nodes <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></Link>
+          </div>
+          <motion.div className="lp-showcase-visual" {...fadeUp(0.2)}>
+            <div className="lp-showcase-img-wrap">
+              <Image src="/landing/chatbot.png" alt="AI Chatbot visualization" fill sizes="(max-width: 900px) 100vw, 50vw" />
+            </div>
+          </motion.div>
+        </div>
+
+        {/* Showcase Row 3: Programming / Code */}
+        <div className="lp-showcase-row">
+          <div className="lp-showcase-content">
+            <span className="lp-showcase-number">03</span>
+            <span className="lp-showcase-label">Custom Logic</span>
+            <motion.h2 className="lp-showcase-heading" {...fadeIn(0)}>
+              Code when <br />you <em>need to.</em>
+            </motion.h2>
+            <motion.p className="lp-showcase-desc" {...fadeIn(0.1)}>
+              Never hit a wall. Drop down to pure TypeScript for complex transformations. Bring your own logic while M8M handles the execution environment and retries.
+            </motion.p>
+            <Link href="/signup" className="lp-nav-link" style={{ color: 'var(--navy)', display: 'inline-flex', fontSize: '1rem' }}>Write Code <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></Link>
+          </div>
+          <motion.div className="lp-showcase-visual" {...fadeUp(0.2)}>
+            <div className="lp-showcase-img-wrap">
+              <Image src="/landing/programming.png" alt="Custom code environment" fill sizes="(max-width: 900px) 100vw, 50vw" />
+            </div>
+          </motion.div>
+        </div>
+
+        {/* Showcase Row 4: Server / Infrastructure */}
+        <div className="lp-showcase-row reverse">
+          <div className="lp-showcase-content">
+            <span className="lp-showcase-number">04</span>
+            <span className="lp-showcase-label">Execution Engine</span>
+            <motion.h2 className="lp-showcase-heading" {...fadeIn(0)}>
+              Enterprise <br /><em>scale.</em>
+            </motion.h2>
+            <motion.p className="lp-showcase-desc" {...fadeIn(0.1)}>
+              Powered by a distributed Kafka event-bus. Zero lost events, automatic retries, and limitless horizontal scaling for your most demanding workflows.
+            </motion.p>
+            <Link href="/signup" className="lp-nav-link" style={{ color: 'var(--coral)', display: 'inline-flex', fontSize: '1rem' }}>View Architecture <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></Link>
+          </div>
+          <motion.div className="lp-showcase-visual" {...fadeUp(0.2)}>
+            <div className="lp-showcase-img-wrap">
+              <Image src="/landing/server.png" alt="Server infrastructure" fill sizes="(max-width: 900px) 100vw, 50vw" />
+            </div>
+          </motion.div>
+        </div>
+      </section>
 
       {/* FEATURES */}
       <section className="lp-features" id="features">

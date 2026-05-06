@@ -5,6 +5,14 @@ module.exports = {
   reactStrictMode: true,
   devIndicators: false,
   output: 'standalone',
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+      },
+    ],
+  },
   // async redirects() {
   //   return [
   //     {
