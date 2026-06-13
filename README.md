@@ -112,8 +112,5 @@ Understanding M8M requires familiarity with a few core components that make up t
    ```
    *Web app starts on `http://localhost:3000` alongside the background worker.*
 
-## Support & License
-
-- **Documentation:** [docs.m8m.dev](https://docs.m8m.dev)
-- **Discord Community:** [discord.gg/m8m](https://discord.gg/m8m)
+## License
 - **License:** MIT License
